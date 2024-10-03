@@ -1,9 +1,13 @@
 import './App.css';
 import Navigation from './components/Navigation';
+import Card from './components/Card';
 
 function App() {
   return (
-    <Navigation />
+    <div>
+      <Navigation />
+      <Card />
+    </div>
 
 
   );
