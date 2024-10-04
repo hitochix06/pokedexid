@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Badge from "react-bootstrap/Badge";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Spinner } from "react-bootstrap";
 import AnimatedCard from "react-animated-3d-card";
 import pokemonColors from "../data/pokemonColors.json";
 
 function Cards({ pokemonUrl }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(pokemonUrl)
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(pokemonUrl);
+        const data = await response.json();
         setPokemon({
           name: data.name,
           id: data.id,
@@ -20,12 +22,31 @@ function Cards({ pokemonUrl }) {
           types: data.types.map((type) => type.type.name),
           image: data.sprites.other["official-artwork"].front_default,
         });
-      })
-      .catch((err) => setError(err.message));
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [pokemonUrl]);
 
   if (error) {
     return <div>{error}</div>;
+  }
+
+  if (loading) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "200px" }}
+      >
+        <Spinner animation="border" role="status">
+          <span className="visually-hidden">Chargement...</span>
+        </Spinner>
+      </div>
+    );
   }
 
   if (!pokemon) {
@@ -45,15 +66,15 @@ function Cards({ pokemonUrl }) {
     >
       <div style={{ padding: "1rem" }}>
         <div style={{ color: "white" }}>ID: {pokemon.id}</div>
-        <img
-          src={pokemon.image}
-          alt={pokemon.name}
-          style={{ width: "100%", height: "auto" }}
-        />
         <div className="text-center">
           <h3 style={{ textTransform: "uppercase", color: "white" }}>
             {pokemon.name}
           </h3>
+          <img
+            src={pokemon.image}
+            alt={pokemon.name}
+            style={{ width: "100%", height: "auto" }}
+          />
           <Row>
             {pokemon.types.map((type, index) => (
               <Col key={index}>
