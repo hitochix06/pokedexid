@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form, FormControl, Button } from 'react-bootstrap';
-import pokemon from '../assets/pokemon/1.png';
+
 
 
 function Search() {
@@ -12,7 +12,7 @@ function Search() {
     className="me-2"
     arial-label="Search"
    />
-   <Button variant="outline-secondary">Rechercher</Button>
+   <Button variant="outline-light">Rechercher</Button>
   </Form>
  );
 }
