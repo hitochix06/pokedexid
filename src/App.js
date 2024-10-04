@@ -40,7 +40,7 @@ function App() {
       <Search onSearch={handleSearch} />
       <div className="d-flex flex-wrap justify-content-center">
         {pokemonList.map((pokemon, index) => (
-          <Card key={index} pokemonUrl={pokemon.url} />
+          <Card key={pokemon.name} pokemonUrl={pokemon.url} index={index} />
         ))}
       </div>
       <div className="d-flex justify-content-center mt-3">

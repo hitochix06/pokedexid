@@ -4,10 +4,11 @@ import AnimatedCard from "react-animated-3d-card";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 
-function Cards({ pokemonUrl }) {
+function Cards({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -26,11 +27,12 @@ function Cards({ pokemonUrl }) {
         setError(err.message);
       } finally {
         setLoading(false);
+        setTimeout(() => setIsVisible(true), index * 200);
       }
     };
 
     fetchData();
-  }, [pokemonUrl]);
+  }, [pokemonUrl, index]);
 
   if (error) {
     return <div>{error}</div>;
@@ -38,10 +40,7 @@ function Cards({ pokemonUrl }) {
 
   if (loading) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "200px" }}
-      >
+      <div className="d-flex justify-content-center align-items-center" style={{ height: "200px" }}>
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Chargement...</span>
         </Spinner>
@@ -54,49 +53,53 @@ function Cards({ pokemonUrl }) {
   }
 
   return (
-    <AnimatedCard
-      style={{
-        width: "18rem",
-        margin: "10px",
-        backgroundColor: pokemonColors[pokemon.types[0]] || "gray", // Utilise la couleur du premier type
-        borderRadius: "0.5rem",
-        cursor: "pointer",
-      }}
-      onClick={() => console.log("Carte cliquée")}
-    >
-      <div style={{ padding: "1rem" }}>
-        <div
+    <div className="card-container">
+      <div className={`animated-card ${isVisible ? 'visible' : ''}`}>
+        <AnimatedCard
           style={{
-            color: "white",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
+            width: "18rem",
+            margin: "10px",
+            backgroundColor: pokemonColors[pokemon.types[0]] || "gray",
+            borderRadius: "0.5rem",
+            cursor: "pointer",
           }}
+          onClick={() => console.log("Carte cliquée")}
         >
-          <span>ID: {pokemon.id}</span>
-          <div>
-            {pokemon.types.map((type, index) => (
+          <div style={{ padding: "1rem" }}>
+            <div
+              style={{
+                color: "white",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <span>ID: {pokemon.id}</span>
+              <div>
+                {pokemon.types.map((type, index) => (
+                  <img
+                    key={index}
+                    src={pokemonTypeIcons[type]}
+                    alt={type}
+                    style={{ width: "30px", height: "30px", marginLeft: "5px" }}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="text-center">
+              <h3 style={{ textTransform: "uppercase", color: "white" }}>
+                {pokemon.name}
+              </h3>
               <img
-                key={index}
-                src={pokemonTypeIcons[type]}
-                alt={type}
-                style={{ width: "30px", height: "30px", marginLeft: "5px" }}
+                src={pokemon.image}
+                alt={pokemon.name}
+                style={{ width: "100%", height: "auto" }}
               />
-            ))}
+            </div>
           </div>
-        </div>
-        <div className="text-center">
-          <h3 style={{ textTransform: "uppercase", color: "white" }}>
-            {pokemon.name}
-          </h3>
-          <img
-            src={pokemon.image}
-            alt={pokemon.name}
-            style={{ width: "100%", height: "auto" }}
-          />
-        </div>
+        </AnimatedCard>
       </div>
-    </AnimatedCard>
+    </div>
   );
 }
 
