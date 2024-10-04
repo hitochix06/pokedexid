@@ -1,21 +1,26 @@
-import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
-import pokemon from 'public/assets/pokemon/1.png';
+import Badge from 'react-bootstrap/Badge';
+import { Row }  from 'react-bootstrap';
 
-function BasicExample() {
+
+function Cards() {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src={pokemon} />
-      <Card.Body>
-        <Card.Title>tire</Card.Title>
-        <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
-        </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
-      </Card.Body>
-    </Card>
+    <Row>
+        <Card style={{ width: '18rem' }}>
+          <Card.Img variant="top" src="holder.js/100px180" />
+          <Card.Body>
+            <Card.Title>nom pokemon</Card.Title>
+            <Card.Text>
+              Some quick example text to build on the card title and make up the
+              bulk of the card's content.
+            </Card.Text>
+            <Badge bg="primary" className='me-2'  >Type</Badge>
+            <Badge bg="primary" className='me-2'>Type</Badge>
+          </Card.Body>
+        </Card>
+        
+    </Row>
   );
 }
 
-export default BasicExample;
+export default Cards;
