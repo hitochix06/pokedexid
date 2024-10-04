@@ -22,4 +22,6 @@ function fetchPokemon(id) {
     });
 }
 
+
+
 export { fetchPokemon };

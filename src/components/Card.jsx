@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Card from "react-bootstrap/Card";
 import Badge from "react-bootstrap/Badge";
 import { Row, Col } from "react-bootstrap";
+import AnimatedCard from "react-animated-3d-card";
+import pokemonColors from "../data/pokemonColors.json";
 
 function Cards({ pokemonUrl }) {
   const [pokemon, setPokemon] = useState(null);
@@ -32,24 +33,45 @@ function Cards({ pokemonUrl }) {
   }
 
   return (
-    <Card style={{ width: "18rem", margin: "10px" }}>
-          ID: {pokemon.id}
-      <Card.Img variant="top" src={pokemon.image} />
-      <Card.Body className="text-center">
-        <Card.Title>{pokemon.name}</Card.Title>
-        <Card.Text>
-        </Card.Text>
-        <Row>
-          {pokemon.types.map((type, index) => (
-            <Col key={index}>
-              <Badge pill bg="primary" >
-                {type}
-              </Badge>
-            </Col>
-          ))}
-        </Row>
-      </Card.Body>
-    </Card>
+    <AnimatedCard
+      style={{
+        width: "18rem",
+        margin: "10px",
+        backgroundColor: pokemonColors[pokemon.types[0]] || "gray", // Utilise la couleur du premier type
+        borderRadius: "0.5rem",
+        cursor: "pointer",
+      }}
+      onClick={() => console.log("Carte cliquée")}
+    >
+      <div style={{ padding: "1rem" }}>
+        <div style={{ color: "white" }}>ID: {pokemon.id}</div>
+        <img
+          src={pokemon.image}
+          alt={pokemon.name}
+          style={{ width: "100%", height: "auto" }}
+        />
+        <div className="text-center">
+          <h3 style={{ textTransform: "uppercase", color: "white" }}>
+            {pokemon.name}
+          </h3>
+          <Row>
+            {pokemon.types.map((type, index) => (
+              <Col key={index}>
+                <Badge
+                  pill
+                  style={{
+                    backgroundColor: pokemonColors[type] || "gray",
+                    color: "white",
+                  }}
+                >
+                  {type}
+                </Badge>
+              </Col>
+            ))}
+          </Row>
+        </div>
+      </div>
+    </AnimatedCard>
   );
 }
 
