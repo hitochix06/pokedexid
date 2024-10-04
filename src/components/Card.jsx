@@ -1,26 +1,55 @@
-import Card from 'react-bootstrap/Card';
-import Badge from 'react-bootstrap/Badge';
-import { Row } from 'react-bootstrap';
-import pokemon from '../assets/pokemon/1.png';
+import React, { useState, useEffect } from "react";
+import Card from "react-bootstrap/Card";
+import Badge from "react-bootstrap/Badge";
+import { Row, Col } from "react-bootstrap";
 
+function Cards({ pokemonUrl }) {
+  const [pokemon, setPokemon] = useState(null);
+  const [error, setError] = useState(null);
 
-function Cards() {
+  useEffect(() => {
+    fetch(pokemonUrl)
+      .then((response) => response.json())
+      .then((data) => {
+        setPokemon({
+          name: data.name,
+          id: data.id,
+          height: data.height / 10,
+          weight: data.weight / 10,
+          types: data.types.map((type) => type.type.name),
+          image: data.sprites.other["official-artwork"].front_default,
+        });
+      })
+      .catch((err) => setError(err.message));
+  }, [pokemonUrl]);
+
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  if (!pokemon) {
+    return <div>Chargement...</div>;
+  }
+
   return (
-    <Row className="m-2">
-      <Card  style={{ width: '18rem'  }} >
-        <Card.Body className="text-center ">
-          <Card.Title>nom pokemon</Card.Title>
-          <Card.Img variant="top" src={pokemon} style={{ width: '100px' }} />
-          <Card.Text>
-            Some quick example text to build on the card title and make up the
-            bulk of the card's content.
-          </Card.Text>
-          <Badge pill bg="primary" className='me-2'  >Type</Badge>
-          <Badge pill bg="primary" className='me-2'>Type</Badge>
-        </Card.Body>
-      </Card>
-
-    </Row>
+    <Card style={{ width: "18rem", margin: "10px" }}>
+          ID: {pokemon.id}
+      <Card.Img variant="top" src={pokemon.image} />
+      <Card.Body className="text-center">
+        <Card.Title>{pokemon.name}</Card.Title>
+        <Card.Text>
+        </Card.Text>
+        <Row>
+          {pokemon.types.map((type, index) => (
+            <Col key={index}>
+              <Badge pill bg="primary" >
+                {type}
+              </Badge>
+            </Col>
+          ))}
+        </Row>
+      </Card.Body>
+    </Card>
   );
 }
 
