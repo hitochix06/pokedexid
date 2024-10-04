@@ -4,12 +4,13 @@
   font-weight: bold;
 }
 
-.fond-red {
-  background-color: rgb(74, 64, 64);
-}
-
 .couleur-text {
   color: white;
   font-size: 20px;
   font-weight: bold;
+}
+
+.text-taille{
+font-family: 'Courier New', Courier, monospace;
+font-weight: bold;
 }

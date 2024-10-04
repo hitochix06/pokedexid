@@ -6,7 +6,7 @@ import pokemon from '../assets/pokemon/1.png';
 
 function Cards() {
   return (
-    <Row>
+    <Row className="m-2">
       <Card  style={{ width: '18rem'  }} >
         <Card.Body className="text-center ">
           <Card.Title>nom pokemon</Card.Title>
