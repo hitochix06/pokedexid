@@ -40,7 +40,10 @@ function Cards({ pokemonUrl, index }) {
 
   if (loading) {
     return (
-      <div className="d-flex justify-content-center align-items-center" style={{ height: "200px" }}>
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "200px" }}
+      >
         <Spinner animation="border" role="status">
           <span className="visually-hidden">Chargement...</span>
         </Spinner>
@@ -54,7 +57,7 @@ function Cards({ pokemonUrl, index }) {
 
   return (
     <div className="card-container">
-      <div className={`animated-card ${isVisible ? 'visible' : ''}`}>
+      <div className={`animated-card ${isVisible ? "visible" : ""}`}>
         <AnimatedCard
           style={{
             width: "18rem",
@@ -62,19 +65,27 @@ function Cards({ pokemonUrl, index }) {
             backgroundColor: pokemonColors[pokemon.types[0]] || "gray",
             borderRadius: "0.5rem",
             cursor: "pointer",
+            position: "relative", // Ajouté pour le positionnement absolu du numéro d'ID
           }}
           onClick={() => console.log("Carte cliquée")}
         >
           <div style={{ padding: "1rem" }}>
             <div
               style={{
-                color: "white",
                 display: "flex",
-                alignItems: "center",
                 justifyContent: "space-between",
+                alignItems: "flex-start",
               }}
             >
-              <span>ID: {pokemon.id}</span>
+              <span
+                style={{
+                  fontSize: "4rem",
+                  fontWeight: "bold",
+                  color: "rgba(255, 255, 255, 0.5)",
+                }}
+              >
+                #{pokemon.id.toString().padStart(3, "0")}
+              </span>
               <div>
                 {pokemon.types.map((type, index) => (
                   <img
@@ -94,6 +105,7 @@ function Cards({ pokemonUrl, index }) {
                 src={pokemon.image}
                 alt={pokemon.name}
                 style={{ width: "100%", height: "auto" }}
+                className="animate__animated animate__bounce"
               />
             </div>
           </div>
