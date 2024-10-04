@@ -7,3 +7,9 @@
 .fond-red {
   background-color: rgb(74, 64, 64);
 }
+
+.couleur-text {
+  color: white;
+  font-size: 20px;
+  font-weight: bold;
+}
