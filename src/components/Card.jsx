@@ -51,9 +51,7 @@ function Cards({ pokemonUrl, index }) {
     );
   }
 
-  if (!pokemon) {
-    return <div>Chargement...</div>;
-  }
+
 
   return (
     <div className="card-container">
@@ -62,7 +60,7 @@ function Cards({ pokemonUrl, index }) {
           style={{
             width: "18rem",
             margin: "10px",
-            backgroundColor: pokemonColors[pokemon.types[0]] || "gray",
+            backgroundColor: pokemonColors[pokemon.types[0]] || "",
             borderRadius: "0.5rem",
             cursor: "pointer",
             position: "relative", // Ajouté pour le positionnement absolu du numéro d'ID
