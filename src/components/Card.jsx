@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
 import AnimatedCard from "react-animated-3d-card";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 
-function Cards({ pokemonUrl, index }) {
+
+function Card({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -26,7 +25,6 @@ function Cards({ pokemonUrl, index }) {
       } catch (err) {
         setError(err.message);
       } finally {
-        setLoading(false);
         setTimeout(() => setIsVisible(true), index * 200);
       }
     };
@@ -38,17 +36,8 @@ function Cards({ pokemonUrl, index }) {
     return <div>{error}</div>;
   }
 
-  if (loading) {
-    return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "200px" }}
-      >
-        <Spinner animation="border" role="status">
-          <span className="visually-hidden">Chargement...</span>
-        </Spinner>
-      </div>
-    );
+  if (!pokemon) {
+    return null;
   }
 
   return (
@@ -61,7 +50,7 @@ function Cards({ pokemonUrl, index }) {
             backgroundColor: pokemonColors[pokemon.types[0]] || "",
             borderRadius: "0.5rem",
             cursor: "pointer",
-            position: "relative", // Ajouté pour le positionnement absolu du numéro d'ID
+            position: "relative",
           }}
           onClick={() => console.log("Carte cliquée")}
         >
@@ -134,4 +123,4 @@ function Cards({ pokemonUrl, index }) {
   );
 }
 
-export default Cards;
+export default Card;
