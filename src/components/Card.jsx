@@ -51,8 +51,6 @@ function Cards({ pokemonUrl, index }) {
     );
   }
 
-
-
   return (
     <div className="card-container">
       <div className={`animated-card ${isVisible ? "visible" : ""}`}>
@@ -109,6 +107,29 @@ function Cards({ pokemonUrl, index }) {
           </div>
         </AnimatedCard>
       </div>
+      <style jsx>{`
+        .pokemon-grid {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+        }
+
+        .card-container {
+          perspective: 1000px;
+        }
+
+        .animated-card {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        }
+
+        .animated-card.visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   );
 }
