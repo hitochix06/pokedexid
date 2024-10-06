@@ -26,11 +26,13 @@ function App() {
       <NavBar />
       <Search onSearch={handleSearch} />
       <PokemonList currentPage={currentPage} searchTerm={searchTerm} />
-      <Pagination
-        currentPage={currentPage}
-        onPrevious={handlePrevious}
-        onNext={handleNext}
-      />
+      {!searchTerm && (
+        <Pagination
+          currentPage={currentPage}
+          onPrevious={handlePrevious}
+          onNext={handleNext}
+        />
+      )}
     </div>
   );
 }
