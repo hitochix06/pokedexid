@@ -3,27 +3,46 @@ import Lottie from "lottie-react";
 import Card from "./Card";
 import animationPokeball from "../assets/animationpokeball.json";
 
-function PokemonList() {
+function PokemonList({ currentPage, searchTerm }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
+  const pokemonPerPage = 20;
 
   useEffect(() => {
     const fetchPokemonList = async () => {
+      setLoading(true);
       try {
-        setLoading(true);
-        const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=20");
+        let url;
+        if (searchTerm) {
+          url = `https://pokeapi.co/api/v2/pokemon/${searchTerm.toLowerCase()}`;
+        } else {
+          const offset = (currentPage - 1) * pokemonPerPage;
+          url = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonPerPage}&offset=${offset}`;
+        }
+
+        const response = await fetch(url);
         const data = await response.json();
-        setPokemonList(data.results);
-        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        if (searchTerm) {
+          setPokemonList([
+            {
+              name: data.name,
+              url: `https://pokeapi.co/api/v2/pokemon/${data.id}/`,
+            },
+          ]);
+        } else {
+          setPokemonList(data.results);
+        }
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (error) {
-        console.error("Erreur lors de la récupération de la liste des Pokémon:", error);
+        console.error("Erreur lors de la récupération des Pokémon:", error);
       } finally {
         setLoading(false);
       }
     };
 
     fetchPokemonList();
-  }, []);
+  }, [currentPage, searchTerm]);
 
   if (loading) {
     return (
@@ -40,7 +59,6 @@ function PokemonList() {
     );
   }
 
-  console.log("Affichage de la liste des Pokémon");
   return (
     <div className="pokemon-grid">
       {pokemonList.map((pokemon, index) => (
