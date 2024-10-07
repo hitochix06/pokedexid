@@ -10,7 +10,7 @@ function Navigation() {
     <Navbar bg="danger" variant="dark" expand="lg">
       <Container>
         <Navbar.Brand href="#home">
-          <img src={logo} alt="icon" style={{ width: "150px" }} />
+          <img src={logo} alt="icon" style={{ width: "200px" }} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
