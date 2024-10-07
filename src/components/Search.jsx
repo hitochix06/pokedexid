@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { Form, FormControl, Container, Row, Col, Alert } from "react-bootstrap";
 
-function Search({ onSearch }) {
+function Search({ onSearch = () => {} }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [error, setError] = useState("");
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      onSearch(searchTerm);
+      if (typeof onSearch === "function") {
+        onSearch(searchTerm);
+      }
     }, 300);
 
     return () => clearTimeout(delayDebounceFn);

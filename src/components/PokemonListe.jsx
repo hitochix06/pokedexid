@@ -3,12 +3,10 @@ import Lottie from "lottie-react";
 import Card from "./Card";
 import animationPokeball from "../assets/animationpokeball.json";
 
-function PokemonList({ currentPage, searchTerm, onPageChange }) {
+function PokemonList({ currentPage, searchTerm = "", onPageChange }) {
   const [pokemonList, setPokemonList] = useState([]);
   const [loading, setLoading] = useState(true);
   const pokemonPerPage = 20;
-  const [filteredPokemonList, setFilteredPokemonList] = useState([]);
-  const [noResults, setNoResults] = useState(false);
 
   useEffect(() => {
     const fetchPokemonList = async () => {
@@ -18,12 +16,11 @@ function PokemonList({ currentPage, searchTerm, onPageChange }) {
         const url = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonPerPage}&offset=${offset}`;
         const response = await fetch(url);
         const data = await response.json();
-        
+
         // Ajout d'un délai de 3 secondes
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+
         setPokemonList(data.results);
-        setFilteredPokemonList(data.results);
       } catch (error) {
         console.error("Erreur lors de la récupération des Pokémon:", error);
       } finally {
@@ -34,18 +31,9 @@ function PokemonList({ currentPage, searchTerm, onPageChange }) {
     fetchPokemonList();
   }, [currentPage]);
 
-  useEffect(() => {
-    if (searchTerm) {
-      const filtered = pokemonList.filter((pokemon) =>
-        pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
-      );
-      setFilteredPokemonList(filtered);
-      setNoResults(filtered.length === 0);
-    } else {
-      setFilteredPokemonList(pokemonList);
-      setNoResults(false);
-    }
-  }, [searchTerm, pokemonList]);
+  const filteredPokemonList = pokemonList.filter((pokemon) =>
+    pokemon.name.toLowerCase().includes((searchTerm || "").toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -65,12 +53,13 @@ function PokemonList({ currentPage, searchTerm, onPageChange }) {
   return (
     <div className="container p-3">
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-4">
-        {filteredPokemonList.map((pokemon, index) => (
-          <div className="col" key={pokemon.name}>
-            <Card pokemonUrl={pokemon.url} index={index} />
-          </div>
-        ))}
-        {noResults && (
+        {filteredPokemonList.length > 0 ? (
+          filteredPokemonList.map((pokemon, index) => (
+            <div className="col" key={pokemon.name}>
+              <Card pokemonUrl={pokemon.url} index={index} />
+            </div>
+          ))
+        ) : (
           <div className="col-12 text-center">
             <p>Aucun résultat trouvé.</p>
           </div>
