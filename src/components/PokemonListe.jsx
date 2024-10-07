@@ -1,39 +1,30 @@
 import React, { useState, useEffect } from "react";
-import Lottie from "lottie-react";
 import Card from "./Card";
+import Lottie from "lottie-react";
 import animationPokeball from "../assets/animationpokeball.json";
 
-function PokemonList({ currentPage, searchTerm = "", onPageChange }) {
-  const [pokemonList, setPokemonList] = useState([]);
+function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [loading, setLoading] = useState(true);
   const pokemonPerPage = 20;
+  const indexOfLastPokemon = currentPage * pokemonPerPage;
+  const indexOfFirstPokemon = indexOfLastPokemon - pokemonPerPage;
+  const currentPokemon = pokemonList.slice(
+    indexOfFirstPokemon,
+    indexOfLastPokemon
+  );
 
   useEffect(() => {
-    const fetchPokemonList = async () => {
-      setLoading(true);
-      try {
-        const offset = (currentPage - 1) * pokemonPerPage;
-        const url = `https://pokeapi.co/api/v2/pokemon?limit=${pokemonPerPage}&offset=${offset}`;
-        const response = await fetch(url);
-        const data = await response.json();
+    setLoading(true);
+    // Simuler un délai de chargement
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 3000);
 
-        // Ajout d'un délai de 3 secondes
-        await new Promise((resolve) => setTimeout(resolve, 3000));
+    return () => clearTimeout(timer);
+  }, [pokemonList, currentPage]);
 
-        setPokemonList(data.results);
-      } catch (error) {
-        console.error("Erreur lors de la récupération des Pokémon:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPokemonList();
-  }, [currentPage]);
-
-  const filteredPokemonList = pokemonList.filter((pokemon) =>
-    pokemon.name.toLowerCase().includes((searchTerm || "").toLowerCase())
-  );
+  console.log("PokemonList reçu:", pokemonList);
+  console.log("Pokémon actuels:", currentPokemon);
 
   if (loading) {
     return (
@@ -53,42 +44,47 @@ function PokemonList({ currentPage, searchTerm = "", onPageChange }) {
   return (
     <div className="container p-3">
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 mb-4">
-        {filteredPokemonList.length > 0 ? (
-          filteredPokemonList.map((pokemon, index) => (
-            <div className="col" key={pokemon.name}>
-              <Card pokemonUrl={pokemon.url} index={index} />
-            </div>
-          ))
-        ) : (
+        {currentPokemon.map((pokemon, index) => (
+          <div className="col" key={pokemon.name}>
+            <Card
+              pokemonUrl={pokemon.url}
+              index={indexOfFirstPokemon + index + 1}
+            />
+          </div>
+        ))}
+        {currentPokemon.length === 0 && (
           <div className="col-12 text-center">
             <p>Aucun résultat trouvé.</p>
           </div>
         )}
       </div>
-      <nav aria-label="Navigation des pages de Pokémon">
-        <ul className="pagination justify-content-center ">
-          <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-            <button
-              className="page-link"
-              onClick={() => onPageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              Précédent
-            </button>
-          </li>
-          <li className="page-item active">
-            <span className="page-link">Page {currentPage}</span>
-          </li>
-          <li className="page-item">
-            <button
-              className="page-link"
-              onClick={() => onPageChange(currentPage + 1)}
-            >
-              Suivant
-            </button>
-          </li>
-        </ul>
-      </nav>
+      {pokemonList.length > pokemonPerPage && (
+        <nav aria-label="Navigation des pages de Pokémon">
+          <ul className="pagination justify-content-center">
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
+                className="page-link"
+                onClick={() => onPageChange(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Précédent
+              </button>
+            </li>
+            <li className="page-item active">
+              <span className="page-link">Page {currentPage}</span>
+            </li>
+            <li className="page-item">
+              <button
+                className="page-link"
+                onClick={() => onPageChange(currentPage + 1)}
+                disabled={indexOfLastPokemon >= pokemonList.length}
+              >
+                Suivant
+              </button>
+            </li>
+          </ul>
+        </nav>
+      )}
     </div>
   );
 }
