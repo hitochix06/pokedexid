@@ -2,7 +2,6 @@ import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import Nav from "react-bootstrap/Nav";
-
 import logo from "../logo.svg";
 
 function Navigation() {
@@ -26,7 +25,7 @@ function Navigation() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-      <style jsx>{`
+      <style >{`
         .custom-dropdown .dropdown-menu[data-bs-popper] {
           min-width: 80px;
           font-size: 0.9rem;
