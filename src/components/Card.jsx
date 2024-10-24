@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import AnimatedCard from "react-animated-3d-card";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
-
+import { Link } from "react-router-dom";
 
 function Card({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
@@ -43,58 +43,64 @@ function Card({ pokemonUrl, index }) {
   return (
     <div className="card-container">
       <div className={`animated-card ${isVisible ? "visible" : ""}`}>
-        <AnimatedCard
-          style={{
-            width: "18rem",
-            margin: "10px",
-            backgroundColor: pokemonColors[pokemon.types[0]] || "",
-            borderRadius: "0.5rem",
-            cursor: "pointer",
-            position: "relative",
-          }}
-          onClick={() => console.log("Carte cliquée")}
-        >
-          <div style={{ padding: "1rem" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-              }}
-            >
-              <span
+        <Link to={`/pokemon/${pokemon.id}`} style={{ textDecoration: "none" }}>
+          <AnimatedCard
+            style={{
+              width: "18rem",
+              margin: "10px",
+              backgroundColor: pokemonColors[pokemon.types[0]] || "",
+              borderRadius: "0.5rem",
+              cursor: "pointer",
+              position: "relative",
+            }}
+            onClick={() => console.log("Carte cliquée")}
+          >
+            <div style={{ padding: "1rem" }}>
+              <div
                 style={{
-                  fontSize: "4rem",
-                  fontWeight: "bold",
-                  color: "rgba(255, 255, 255, 0.5)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
                 }}
               >
-                #{pokemon.id.toString().padStart(3, "0")}
-              </span>
-              <div>
-                {pokemon.types.map((type, index) => (
-                  <img
-                    key={index}
-                    src={pokemonTypeIcons[type]}
-                    alt={type}
-                    style={{ width: "30px", height: "30px", marginLeft: "5px" }}
-                  />
-                ))}
+                <span
+                  style={{
+                    fontSize: "4rem",
+                    fontWeight: "bold",
+                    color: "rgba(255, 255, 255, 0.5)",
+                  }}
+                >
+                  #{pokemon.id.toString().padStart(3, "0")}
+                </span>
+                <div>
+                  {pokemon.types.map((type, index) => (
+                    <img
+                      key={index}
+                      src={pokemonTypeIcons[type]}
+                      alt={type}
+                      style={{
+                        width: "30px",
+                        height: "30px",
+                        marginLeft: "5px",
+                      }}
+                    />
+                  ))}
+                </div>
+              </div>
+              <div className="text-center">
+                <h3 style={{ textTransform: "uppercase", color: "white" }}>
+                  {pokemon.name}
+                </h3>
+                <img
+                  src={pokemon.image}
+                  alt={pokemon.name}
+                  style={{ width: "100%", height: "auto" }}
+                  className="animate__animated animate__bounce"
+                />
               </div>
             </div>
-            <div className="text-center">
-              <h3 style={{ textTransform: "uppercase", color: "white" }}>
-                {pokemon.name}
-              </h3>
-              <img
-                src={pokemon.image}
-                alt={pokemon.name}
-                style={{ width: "100%", height: "auto" }}
-                className="animate__animated animate__bounce"
-              />
-            </div>
-          </div>
-        </AnimatedCard>
+          </AnimatedCard>
+        </Link>
       </div>
       <style jsx>{`
         .pokemon-grid {
