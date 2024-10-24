@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { fetchPokemon } from "../api/Api";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
+import Lottie from "lottie-react";
+import animationPokeball from "../assets/animationpokeball.json";
 
 function PokemonDetail() {
   const { id } = useParams();
@@ -16,7 +18,20 @@ function PokemonDetail() {
   }, [id]);
 
   if (error) return <div>Erreur : {error}</div>;
-  if (!pokemon) return <div>Chargement...</div>;
+  if (!pokemon) {
+    return (
+      <div
+        className="d-flex justify-content-center align-items-center"
+        style={{ height: "100vh" }}
+      >
+        <Lottie
+          animationData={animationPokeball}
+          loop={true}
+          style={{ width: 200, height: 200 }}
+        />
+      </div>
+    );
+  }
 
   return (
     <div className="container mt-5">
