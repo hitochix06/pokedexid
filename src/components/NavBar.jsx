@@ -8,7 +8,7 @@ function Navigation() {
   return (
     <Navbar bg="danger" variant="dark" expand="lg">
       <Container>
-        <Navbar.Brand href="#home">
+        <Navbar.Brand href="/">
           <img src={logo} alt="icon" style={{ width: "200px" }} />
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
@@ -25,7 +25,7 @@ function Navigation() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-      <style >{`
+      <style>{`
         .custom-dropdown .dropdown-menu[data-bs-popper] {
           min-width: 80px;
           font-size: 0.9rem;

@@ -18,13 +18,12 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
     // Simuler un délai de chargement
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 3000);
+    }, 1000);
 
     return () => clearTimeout(timer);
   }, [pokemonList, currentPage]);
 
-  console.log("PokemonList reçu:", pokemonList);
-  console.log("Pokémon actuels:", currentPokemon);
+
 
   if (loading) {
     return (

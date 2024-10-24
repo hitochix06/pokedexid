@@ -53,7 +53,7 @@ function Card({ pokemonUrl, index }) {
               cursor: "pointer",
               position: "relative",
             }}
-            onClick={() => console.log("Carte cliquée")}
+           
           >
             <div style={{ padding: "1rem" }}>
               <div

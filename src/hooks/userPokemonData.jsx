@@ -12,7 +12,6 @@ export function usePokemonData() {
       try {
         const data = await fetchAllPokemon();
         setAllPokemon(data);
-        console.log("Tous les Pokémon chargés:", data);
       } catch (error) {
         console.error("Erreur lors de la récupération des Pokémon:", error);
       }
@@ -27,12 +26,10 @@ export function usePokemonData() {
     );
     setFilteredPokemon(filtered);
     setCurrentPage(1);
-    console.log("Pokémon filtrés:", filtered);
   }, [searchTerm, allPokemon]);
 
   const handleSearch = (term) => {
     setSearchTerm(term);
-    console.log("Terme de recherche:", term);
   };
 
   const handlePageChange = (newPage) => {
