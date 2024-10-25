@@ -25,7 +25,7 @@ function Navigation() {
           </Nav>
         </Navbar.Collapse>
       </Container>
-      <style>{`
+      <style jsx>{`
         .custom-dropdown .dropdown-menu[data-bs-popper] {
           min-width: 80px;
           font-size: 0.9rem;
