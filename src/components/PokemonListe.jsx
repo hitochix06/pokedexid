@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Card from "./Card";
 import Lottie from "lottie-react";
-import animationPokeball from "../assets/animationpokeball.json";
+import animationPokeball from "../assets/Animationpokeball.json";
 
 function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [loading, setLoading] = useState(true);

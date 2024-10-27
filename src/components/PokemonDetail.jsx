@@ -4,7 +4,7 @@ import { fetchPokemon } from "../api/Api";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import Lottie from "lottie-react";
-import animationPokeball from "../assets/animationpokeball.json";
+import animationPokeball from "../assets/Animationpokeball.json";
 
 function PokemonDetail() {
   const { id } = useParams();
