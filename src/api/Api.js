@@ -16,12 +16,19 @@ function fetchPokemon(id) {
             weight: data.weight / 10, // convertir en kg
             types: data.types.map((type) => type.type.name),
             image: data.sprites.other["official-artwork"].front_default,
+            stats: data.stats.map((stat) => ({
+              name: stat.stat.name,
+              base_stat: stat.base_stat
+            }))
           });
         }, 500);
       });
     });
 }
 
+// Nouvelle fonction fetchPokemonDetails
+function fetchPokemonDetails(id) {
+  return fetchPokemon(id);
+}
 
-
-export { fetchPokemon };
+export { fetchPokemon, fetchPokemonDetails };

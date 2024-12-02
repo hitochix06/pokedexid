@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchPokemon } from "../api/Api";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import Lottie from "lottie-react";
+import { fetchPokemonDetails } from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
 
 function PokemonDetail() {
@@ -11,10 +11,27 @@ function PokemonDetail() {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
 
+  // Importer dynamiquement l'image du Pokémon
+  const getPokemonImage = (id) => {
+    try {
+      return require(`../assets/pokemon/${id}.png`);
+    } catch (error) {
+      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
+      return null;
+    }
+  };
+
   useEffect(() => {
-    fetchPokemon(id)
-      .then(setPokemon)
-      .catch((err) => setError(err.message));
+    const loadPokemonDetails = async () => {
+      try {
+        const pokemonData = await fetchPokemonDetails(id);
+        setPokemon(pokemonData);
+      } catch (err) {
+        setError(err.message);
+      }
+    };
+
+    loadPokemonDetails();
   }, [id]);
 
   if (error) return <div>Erreur : {error}</div>;
@@ -36,12 +53,23 @@ function PokemonDetail() {
   return (
     <div className="container mt-5">
       <Link to="/" className="btn btn-primary mb-3">Retour à la liste</Link>
-      <div className="card" style={{ backgroundColor: pokemonColors[pokemon.types[0]] || "" }}>
+      <div 
+        className="card" 
+        style={{ 
+          backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF" 
+        }}
+      >
         <div className="card-body">
-          <h2 className="card-title text-center text-white">{pokemon.name.toUpperCase()}</h2>
+          <h2 className="card-title text-center text-white">
+            {pokemon.name.toUpperCase()}
+          </h2>
           <div className="row">
             <div className="col-md-6 text-center">
-              <img src={pokemon.image} alt={pokemon.name} className="img-fluid" />
+              <img 
+                src={getPokemonImage(pokemon.id)} 
+                alt={pokemon.name} 
+                className="img-fluid" 
+              />
             </div>
             <div className="col-md-6">
               <p><strong>Numéro :</strong> #{pokemon.id.toString().padStart(3, "0")}</p>
@@ -58,6 +86,35 @@ function PokemonDetail() {
                   />
                 ))}
               </div>
+            </div>
+          </div>
+          
+          {/* Section des stats */}
+          <div className="row mt-4">
+            <div className="col-12">
+              <h4 className="text-white">Statistiques</h4>
+              {pokemon.stats.map((stat, index) => (
+                <div key={index} className="mb-3">
+                  <div className="d-flex justify-content-between">
+                    <span className="text-white">{stat.name}</span>
+                    <span className="text-white">{stat.base_stat}</span>
+                  </div>
+                  <div className="progress" style={{ height: "20px" }}>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{
+                        width: `${(stat.base_stat / 255) * 100}%`,
+                        backgroundColor: '#fff',
+                        opacity: '0.8'
+                      }}
+                      aria-valuenow={stat.base_stat}
+                      aria-valuemin="0"
+                      aria-valuemax="255"
+                    ></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
