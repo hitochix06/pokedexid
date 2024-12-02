@@ -59,12 +59,27 @@ function PokemonDetail() {
         Retour à la liste
       </Link>
       <div
-        className="card"
+        className="card position-relative"
         style={{
           backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
         }}
       >
-        <div className="card-body">
+        <div
+          className="position-absolute top-0 start-0 w-100 text-center"
+          style={{
+            fontSize: "10rem",
+            fontWeight: "bold",
+            color: "rgba(255, 255, 255, 0.1)",
+            zIndex: 1,
+            pointerEvents: "none",
+            userSelect: "none",
+            lineHeight: "1",
+            marginTop: "-50px",
+          }}
+        >
+          #{pokemon.id.toString().padStart(3, "0")}
+        </div>
+        <div className="card-body position-relative" style={{ zIndex: 2 }}>
           <h2 className="card-title text-center text-white">
             {pokemon.name.toUpperCase()}
           </h2>
