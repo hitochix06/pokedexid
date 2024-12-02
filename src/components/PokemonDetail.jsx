@@ -130,8 +130,8 @@ function PokemonDetail() {
                           role="progressbar"
                           style={{
                             width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor: "#fff",
-                            opacity: "0.8",
+                            backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
+                            opacity: "0.8"
                           }}
                           aria-valuenow={stat.base_stat}
                           aria-valuemin="0"
@@ -154,8 +154,8 @@ function PokemonDetail() {
                           role="progressbar"
                           style={{
                             width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor: "#fff",
-                            opacity: "0.8",
+                            backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
+                            opacity: "0.8"
                           }}
                           aria-valuenow={stat.base_stat}
                           aria-valuemin="0"
