@@ -115,14 +115,20 @@ function PokemonDetail() {
           {/* Section des stats */}
           <div className="row mt-4">
             <div className="col-12">
-              <h4 className="text-white text-center mb-4">Statistiques</h4>
+              <h4 className="text-white text-uppercase text-center mb-4">
+                Statistiques
+              </h4>
               <div className="row justify-content-center">
                 <div className="col-md-6">
                   {pokemon.stats.slice(0, 3).map((stat, index) => (
                     <div key={index} className="mb-3">
                       <div className="d-flex justify-content-between">
-                        <span className="text-white">{stat.name}</span>
-                        <span className="text-white">{stat.base_stat}</span>
+                        <span className="text-white text-uppercase">
+                          {stat.name}
+                        </span>
+                        <span className="text-white text-uppercase">
+                          {stat.base_stat}
+                        </span>
                       </div>
                       <div className="progress" style={{ height: "20px" }}>
                         <div
@@ -130,8 +136,9 @@ function PokemonDetail() {
                           role="progressbar"
                           style={{
                             width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
-                            opacity: "0.8"
+                            backgroundColor:
+                              pokemonColors[pokemon.types[0]] || "#FFFFFF",
+                            opacity: "0.8",
                           }}
                           aria-valuenow={stat.base_stat}
                           aria-valuemin="0"
@@ -145,8 +152,12 @@ function PokemonDetail() {
                   {pokemon.stats.slice(3).map((stat, index) => (
                     <div key={index} className="mb-3">
                       <div className="d-flex justify-content-between">
-                        <span className="text-white">{stat.name}</span>
-                        <span className="text-white">{stat.base_stat}</span>
+                        <span className="text-white text-uppercase">
+                          {stat.name}
+                        </span>
+                        <span className="text-white text-uppercase">
+                          {stat.base_stat}
+                        </span>
                       </div>
                       <div className="progress" style={{ height: "20px" }}>
                         <div
@@ -154,8 +165,9 @@ function PokemonDetail() {
                           role="progressbar"
                           style={{
                             width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
-                            opacity: "0.8"
+                            backgroundColor:
+                              pokemonColors[pokemon.types[0]] || "#FFFFFF",
+                            opacity: "0.8",
                           }}
                           aria-valuenow={stat.base_stat}
                           aria-valuemin="0"
