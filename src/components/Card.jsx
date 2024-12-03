@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
@@ -6,7 +6,8 @@ import pokemonTypeIcons from "../assets/pokemonTypelcons";
 function Card3D({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
-  const [tiltPosition, setTiltPosition] = useState({ x: 0, y: 0 });
+  const [rotation, setRotation] = useState({ x: 0, y: 0 });
+  const cardRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -30,19 +31,25 @@ function Card3D({ pokemonUrl, index }) {
   }, [pokemonUrl]);
 
   const handleMouseMove = (e) => {
-    const card = e.currentTarget;
+    if (!cardRef.current) return;
+
+    const card = cardRef.current;
     const rect = card.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
 
-    const angleX = (centerY - e.clientY) / 20;
-    const angleY = -(centerX - e.clientX) / 20;
+    const maxRotation = 15; // Limite de rotation
+    const deltaX = e.clientX - centerX;
+    const deltaY = e.clientY - centerY;
 
-    setTiltPosition({ x: angleX, y: angleY });
+    const rotateX = -deltaY / (rect.height / 2) * maxRotation;
+    const rotateY = deltaX / (rect.width / 2) * maxRotation;
+
+    setRotation({ x: rotateX, y: rotateY });
   };
 
   const handleMouseLeave = () => {
-    setTiltPosition({ x: 0, y: 0 });
+    setRotation({ x: 0, y: 0 });
   };
 
   if (error) return <div>{error}</div>;
@@ -53,10 +60,15 @@ function Card3D({ pokemonUrl, index }) {
 
   return (
     <div 
+      ref={cardRef}
       className="pokemon-card-3d"
       style={{
-        transform: `perspective(1000px) rotateX(${tiltPosition.x}deg) rotateY(${tiltPosition.y}deg)`,
         backgroundColor: cardBgColor,
+        transform: `perspective(1000px) rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+        boxShadow: `
+          ${rotation.y * 2}px ${rotation.x * 2}px 20px rgba(0,0,0,0.2),
+          ${-rotation.y * 2}px ${-rotation.x * 2}px 20px rgba(0,0,0,0.1)
+        `
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
@@ -81,6 +93,9 @@ function Card3D({ pokemonUrl, index }) {
             src={pokemon.image} 
             alt={pokemon.name} 
             className="pokemon-image" 
+            style={{
+              transform: `translateZ(50px) scale(${1 + Math.abs(rotation.x + rotation.y) / 100})`,
+            }}
           />
         </div>
 
@@ -94,9 +109,6 @@ function Card3D({ pokemonUrl, index }) {
           width: 250px;
           height: 350px;
           border-radius: 20px;
-          box-shadow: 
-            0 10px 30px rgba(0,0,0,0.2), 
-            0 15px 40px rgba(0,0,0,0.1);
           overflow: hidden;
           margin: 20px;
           position: relative;
@@ -156,8 +168,7 @@ function Card3D({ pokemonUrl, index }) {
         .pokemon-image {
           max-width: 180px;
           max-height: 180px;
-          transition: transform 0.3s ease;
-          transform: translateZ(50px);
+          transition: transform 0.1s ease;
         }
 
         .pokemon-name {
@@ -168,10 +179,6 @@ function Card3D({ pokemonUrl, index }) {
           background-color: rgba(0,0,0,0.15);
           letter-spacing: 1px;
           text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-        }
-
-        .pokemon-card-3d:hover .pokemon-image {
-          transform: translateZ(80px);
         }
       `}</style>
     </div>
