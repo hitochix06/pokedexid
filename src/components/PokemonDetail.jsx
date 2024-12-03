@@ -6,20 +6,18 @@ import Lottie from "lottie-react";
 import { fetchPokemonDetails } from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
 
+
 function PokemonDetail() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
+  const [isLoaded, setIsLoaded] = useState(false);
 
-  // Importer dynamiquement l'image du Pokémon
   const getPokemonImage = (id) => {
     try {
       return require(`../assets/pokemon/${id}.png`);
     } catch (error) {
-      console.error(
-        `Erreur lors de l'importation de l'image du Pokémon ${id}`,
-        error
-      );
+      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
       return null;
     }
   };
@@ -29,6 +27,7 @@ function PokemonDetail() {
       try {
         const pokemonData = await fetchPokemonDetails(id);
         setPokemon(pokemonData);
+        setTimeout(() => setIsLoaded(true), 500); // Délai pour l'animation
       } catch (err) {
         setError(err.message);
       }
@@ -37,153 +36,128 @@ function PokemonDetail() {
     loadPokemonDetails();
   }, [id]);
 
-  if (error) return <div>Erreur : {error}</div>;
+  if (error) return <div className="alert alert-danger">Erreur : {error}</div>;
   if (!pokemon) {
     return (
-      <div
-        className="d-flex justify-content-center align-items-center"
-        style={{ height: "100vh" }}
-      >
+      <div className="d-flex justify-content-center align-items-center vh-100">
         <Lottie
           animationData={animationPokeball}
           loop={true}
-          style={{ width: 200, height: 200 }}
+          className="w-25"
         />
       </div>
     );
   }
 
+  const primaryColor = pokemonColors[pokemon.types[0]] || "#FFFFFF";
+  const gradientBackground = `linear-gradient(135deg, ${primaryColor}, ${primaryColor}80)`;
+
   return (
-    <div className="container mt-5">
-      <Link to="/" className="btn btn-primary mb-3">
-        Retour à la liste
+    <div className="container py-5">
+      <Link 
+        to="/" 
+        className="btn btn-outline-secondary mb-4 shadow-sm animate__animated animate__fadeIn"
+      >
+        ← Retour à la liste
       </Link>
-      <div
-        className="card position-relative"
-        style={{
-          backgroundColor: pokemonColors[pokemon.types[0]] || "#FFFFFF",
+
+      <div 
+        className={`card border-0 shadow-lg overflow-hidden animate__animated ${isLoaded ? 'animate__fadeIn' : ''}`}
+        style={{ 
+          background: gradientBackground,
+          transition: 'all 0.5s ease',
+          animationDelay: '0.2s'
         }}
       >
-        <div className="card-body position-relative" style={{ zIndex: 2 }}>
-          <h2 className="card-title text-center text-white">
-            {pokemon.name.toUpperCase()}
-          </h2>
-          <div className="row">
-            <div className="col-md-6 text-center">
-              <img
-                src={getPokemonImage(pokemon.id)}
-                alt={pokemon.name}
-                className="img-fluid"
-                style={{
-                  maxWidth: "250px", // Limite la largeur maximale
-                  maxHeight: "250px", // Limite la hauteur maximale
-                  objectFit: "contain", // Garde les proportions de l'image
-                }}
-              />
-            </div>
-            <div className="col-md-6">
-              <p>
-                <strong>Taille :</strong> {pokemon.height} m
-              </p>
-              <p>
-                <strong>Poids :</strong> {pokemon.weight} kg
-              </p>
-              <p>
-                <strong>Types :</strong>
-              </p>
-              <div>
-                {pokemon.types.map((type, index) => (
-                  <img
-                    key={index}
-                    src={pokemonTypeIcons[type]}
-                    alt={type}
-                    style={{
-                      width: "30px",
-                      height: "30px",
-                      marginRight: "5px",
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
-          <div
-            className="position-absolute top-0 end-0 w-100 text-end pe-3"
-            style={{
-              fontSize: "10rem",
-              fontWeight: "bold",
-              color: "rgba(255, 255, 255, 0.1)",
-              zIndex: 1,
+        <div className="card-body position-relative text-white">
+          {/* Numéro du Pokémon */}
+          <div 
+            className="position-absolute top-0 end-0 text-white-50 fs-1 fw-bold"
+            style={{ 
+              opacity: 0.2, 
+              transform: 'translate(20%, -20%)',
+              zIndex: 1 
             }}
           >
             #{pokemon.id.toString().padStart(3, "0")}
           </div>
-          {/* Section des stats */}
-          <div className="row mt-4">
-            <div className="col-12">
-              <h4 className="text-white text-uppercase text-center mb-4">
-                Statistiques
-              </h4>
-              <div className="row justify-content-center">
-                <div className="col-md-6">
-                  {pokemon.stats.slice(0, 3).map((stat, index) => (
-                    <div key={index} className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <span className="text-white text-uppercase">
-                          {stat.name}
-                        </span>
-                        <span className="text-white text-uppercase">
-                          {stat.base_stat}
-                        </span>
-                      </div>
-                      <div className="progress" style={{ height: "20px" }}>
-                        <div
-                          className="progress-bar"
-                          role="progressbar"
-                          style={{
-                            width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor:
-                              pokemonColors[pokemon.types[0]] || "#FFFFFF",
-                            opacity: "0.8",
-                          }}
-                          aria-valuenow={stat.base_stat}
-                          aria-valuemin="0"
-                          aria-valuemax="255"
-                        ></div>
-                      </div>
-                    </div>
-                  ))}
+
+          {/* Titre et Image */}
+          <div className="row align-items-center">
+            <div className="col-md-6 text-center">
+              <h2 
+                className="card-title text-uppercase mb-4 animate__animated animate__fadeInLeft"
+                style={{ letterSpacing: '2px' }}
+              >
+                {pokemon.name}
+              </h2>
+              <img
+                src={getPokemonImage(pokemon.id)}
+                alt={pokemon.name}
+                className="img-fluid animate__animated animate__bounceIn"
+                style={{
+                  maxWidth: "300px",
+                  filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.2))"
+                }}
+              />
+            </div>
+
+            {/* Informations et Types */}
+            <div className="col-md-6 animate__animated animate__fadeInRight">
+              <div className="d-flex justify-content-between mb-3">
+                <div>
+                  <strong>Taille</strong>
+                  <p className="text-white-75">{pokemon.height} m</p>
                 </div>
-                <div className="col-md-6">
-                  {pokemon.stats.slice(3).map((stat, index) => (
-                    <div key={index} className="mb-3">
-                      <div className="d-flex justify-content-between">
-                        <span className="text-white text-uppercase">
-                          {stat.name}
-                        </span>
-                        <span className="text-white text-uppercase">
-                          {stat.base_stat}
-                        </span>
-                      </div>
-                      <div className="progress" style={{ height: "20px" }}>
-                        <div
-                          className="progress-bar"
-                          role="progressbar"
-                          style={{
-                            width: `${(stat.base_stat / 255) * 100}%`,
-                            backgroundColor:
-                              pokemonColors[pokemon.types[0]] || "#FFFFFF",
-                            opacity: "0.8",
-                          }}
-                          aria-valuenow={stat.base_stat}
-                          aria-valuemin="0"
-                          aria-valuemax="255"
-                        ></div>
-                      </div>
-                    </div>
+                <div>
+                  <strong>Poids</strong>
+                  <p className="text-white-75">{pokemon.weight} kg</p>
+                </div>
+              </div>
+
+              <div className="mb-4">
+                <strong className="d-block mb-2">Types</strong>
+                <div className="d-flex">
+                  {pokemon.types.map((type, index) => (
+                    <img
+                      key={index}
+                      src={pokemonTypeIcons[type]}
+                      alt={type}
+                      className="me-2 animate__animated animate__pulse"
+                      style={{
+                        width: "40px",
+                        height: "40px",
+                        animation: 'pulse 2s infinite'
+                      }}
+                    />
                   ))}
                 </div>
               </div>
+            </div>
+          </div>
+
+          {/* Statistiques */}
+          <div className="mt-5">
+            <h4 className="text-center text-uppercase mb-4">Statistiques</h4>
+            <div className="row">
+              {pokemon.stats.map((stat, index) => (
+                <div key={index} className="col-md-6 mb-3 animate__animated animate__fadeInUp">
+                  <div className="d-flex justify-content-between mb-1">
+                    <span className="text-uppercase">{stat.name}</span>
+                    <span>{stat.base_stat}</span>
+                  </div>
+                  <div className="progress" style={{ height: "10px" }}>
+                    <div
+                      className="progress-bar"
+                      role="progressbar"
+                      style={{
+                        width: `${(stat.base_stat / 255) * 100}%`,
+                        backgroundColor: 'rgba(255,255,255,0.7)'
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
