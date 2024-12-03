@@ -1,0 +1,94 @@
+{
+ "types": {
+     "normal": {
+         "fr": "Normal",
+         "en": "Normal", 
+         "jp": "ノーマル"
+     },
+     "fire": {
+         "fr": "Feu", 
+         "en": "Fire", 
+         "jp": "ほのお"
+     },
+     "water": {
+         "fr": "Eau", 
+         "en": "Water", 
+         "jp": "みず"
+     },
+     "grass": {
+         "fr": "Plante", 
+         "en": "Grass", 
+         "jp": "くさ"
+     },
+     "electric": {
+         "fr": "Électrik", 
+         "en": "Electric", 
+         "jp": "でんき"
+     },
+     "ice": {
+         "fr": "Glace", 
+         "en": "Ice", 
+         "jp": "こおり"
+     },
+     "fighting": {
+         "fr": "Combat", 
+         "en": "Fighting", 
+         "jp": "かくとう"
+     },
+     "poison": {
+         "fr": "Poison", 
+         "en": "Poison", 
+         "jp": "どく"
+     },
+     "ground": {
+         "fr": "Sol", 
+         "en": "Ground", 
+         "jp": "じめん"
+     },
+     "flying": {
+         "fr": "Vol", 
+         "en": "Flying", 
+         "jp": "ひこう"
+     },
+     "psychic": {
+         "fr": "Psy", 
+         "en": "Psychic", 
+         "jp": "エスパー"
+     },
+     "bug": {
+         "fr": "Insecte", 
+         "en": "Bug", 
+         "jp": "むし"
+     },
+     "rock": {
+         "fr": "Roche", 
+         "en": "Rock", 
+         "jp": "いわ"
+     },
+     "ghost": {
+         "fr": "Spectre", 
+         "en": "Ghost", 
+         "jp": "ゴースト"
+     },
+     "dragon": {
+         "fr": "Dragon", 
+         "en": "Dragon", 
+         "jp": "ドラゴン"
+     },
+     "dark": {
+         "fr": "Ténèbres", 
+         "en": "Dark", 
+         "jp": "あく"
+     },
+     "steel": {
+         "fr": "Acier", 
+         "en": "Steel", 
+         "jp": "はがね"
+     },
+     "fairy": {
+         "fr": "Fée", 
+         "en": "Fairy", 
+         "jp": "フェアリー"
+     }
+ }
+}
