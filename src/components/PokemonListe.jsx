@@ -32,7 +32,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
         <Lottie
           animationData={animationPokeball}
           loop={true}
-          style={{ width: 200, height: 200 }}
+          className="w-25"
         />
       </div>
     );
