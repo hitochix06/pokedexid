@@ -106,7 +106,6 @@ function PokemonDetail() {
   return (
     <div
       className="container-fluid pokemon-detail"
-      style={{ backgroundColor: primaryColor + "20" }}
     >
       <div className="row">
         <div className="col-12 py-4">
@@ -117,216 +116,220 @@ function PokemonDetail() {
       </div>
 
       <div className="row justify-content-center">
-        <div className="col-md-10 col-lg-8">
-          <div
-            className="card pokemon-card border-0 shadow-lg"
-            style={{
-              background: gradientBackground,
-              borderRadius: "20px",
-              overflow: "hidden",
-            }}
-          >
-            <div className="card-header text-center text-white py-4">
-              <h1 className="display-5 text-uppercase">{pokemon.name}</h1>
-              <div className="pokemon-number text-white-50">
-                #{pokemon.id.toString().padStart(3, "0")}
+        <div className="col-md-10 col-lg-9">
+          <div className="row">
+            <div className="col-md-6 mb-4">
+              <div
+                className="card pokemon-card border-0 shadow-lg h-100"
+                style={{
+                  background: gradientBackground,
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                  padding: "15px",
+                }}
+              >
+                <div className="card-header text-center text-white py-4">
+                  <h1 className="display-5 text-uppercase">{pokemon.name}</h1>
+                  <div className="pokemon-number text-white-50">
+                    #{pokemon.id.toString().padStart(3, "0")}
+                  </div>
+                </div>
+
+                <div className="card-body">
+                  <div className="row align-items-center">
+                    <div className="col-md-6 text-center">
+                      <img
+                        src={getPokemonImage(pokemon.id)}
+                        alt={pokemon.name}
+                        className="img-fluid pokemon-image"
+                        style={{
+                          maxWidth: "200px",
+                          filter: "drop-shadow(0 15px 20px rgba(0,0,0,0.3))",
+                          transform: "scale(1.2)",
+                        }}
+                      />
+                    </div>
+
+                    <div className="col-md-6">
+                      <div className="row text-white">
+                        <div className="col-6 mb-3">
+                          <h5>Taille</h5>
+                          <p className="lead">{pokemon.height} m</p>
+                        </div>
+                        <div className="col-6 mb-3">
+                          <h5>Poids</h5>
+                          <p className="lead">{pokemon.weight} kg</p>
+                        </div>
+                      </div>
+
+                      <div className="types-container mt-4">
+                        <h5 className="text-white mb-3">Types</h5>
+                        <div className="d-flex justify-content-start">
+                          {pokemon.types.map((type, index) => (
+                            <div
+                              key={index}
+                              className="type-badge me-3 p-2 rounded text-white d-flex align-items-center"
+                              style={{
+                                backgroundColor: pokemonColors[type] + "80",
+                                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                              }}
+                            >
+                              <img
+                                src={pokemonTypeIcons[type]}
+                                alt={type}
+                                style={{ width: "30px", marginRight: "10px" }}
+                              />
+                              {type}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="stats-section mt-5">
+                    <h4 className="text-center text-white text-uppercase mb-4">
+                      Statistiques
+                    </h4>
+                    <div className="row">
+                      <div className="col-md-6">
+                        {pokemon.stats.slice(0, 3).map((stat, index) => (
+                          <div key={index} className="stat-item mb-3">
+                            <div className="d-flex justify-content-between text-white mb-2">
+                              <span className="text-uppercase">{stat.name}</span>
+                              <span>{stat.base_stat}</span>
+                            </div>
+                            <div
+                              className="progress"
+                              style={{
+                                height: "10px",
+                                backgroundColor: "rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              <div
+                                className="progress-bar"
+                                role="progressbar"
+                                style={{
+                                  width: "0%",
+                                  backgroundColor: "white",
+                                  opacity: 0.8,
+                                  transition: "width 1.5s ease-out",
+                                }}
+                                data-progress={`${(stat.base_stat / 255) * 100}`}
+                              ></div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                      <div className="col-md-6">
+                        {pokemon.stats.slice(3).map((stat, index) => (
+                          <div key={index} className="stat-item mb-3">
+                            <div className="d-flex justify-content-between text-white mb-2">
+                              <span className="text-uppercase">{stat.name}</span>
+                              <span>{stat.base_stat}</span>
+                            </div>
+                            <div
+                              className="progress"
+                              style={{
+                                height: "10px",
+                                backgroundColor: "rgba(255,255,255,0.2)",
+                              }}
+                            >
+                              <div
+                                className="progress-bar"
+                                role="progressbar"
+                                style={{
+                                  width: "0%",
+                                  backgroundColor: "white",
+                                  opacity: 0.8,
+                                  transition: "width 1.5s ease-out",
+                                }}
+                                data-progress={`${(stat.base_stat / 255) * 100}`}
+                              ></div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="abilities-section mt-5 px-4 pb-4">
+                    <h4 className="text-center text-white text-uppercase mb-4">
+                      Capacités
+                    </h4>
+                    <div className="row">
+                      {abilities.length > 0 ? (
+                        abilities.map((ability, index) => (
+                          <div key={index} className="col-md-4 mb-3">
+                            <div
+                              className="ability-card p-3 rounded text-white text-center"
+                              style={{
+                                backgroundColor: "rgba(255,255,255,0.2)",
+                                boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                              }}
+                            >
+                              <h5 className="text-uppercase mb-2">
+                                {ability.name
+                                  ? ability.name.replace("-", " ")
+                                  : "Capacité inconnue"}
+                              </h5>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="col-12 text-center text-white">
+                          Aucune capacité trouvée
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="card-body">
-              <div className="row align-items-center">
-                <div className="col-md-6 text-center">
-                  <img
-                    src={getPokemonImage(pokemon.id)}
-                    alt={pokemon.name}
-                    className="img-fluid pokemon-image"
-                    style={{
-                      maxWidth: "350px",
-                      filter: "drop-shadow(0 15px 20px rgba(0,0,0,0.3))",
-                      transform: "scale(1.2)",
-                    }}
-                  />
+            <div className="col-md-6 mb-4">
+              <div 
+                className="card moves-section border-0 shadow-lg h-100"
+                style={{
+                  background: gradientBackground,
+                  borderRadius: "20px",
+                  overflow: "hidden",
+                  padding: "15px",
+                }}
+              >
+                <div className="card-header text-center text-white py-4">
+                  <h4 className="text-uppercase">Mouvements</h4>
                 </div>
-
-                <div className="col-md-6">
-                  <div className="row text-white">
-                    <div className="col-6 mb-3">
-                      <h5>Taille</h5>
-                      <p className="lead">{pokemon.height} m</p>
-                    </div>
-                    <div className="col-6 mb-3">
-                      <h5>Poids</h5>
-                      <p className="lead">{pokemon.weight} kg</p>
-                    </div>
-                  </div>
-
-                  <div className="types-container mt-4">
-                    <h5 className="text-white mb-3">Types</h5>
-                    <div className="d-flex justify-content-start">
-                      {pokemon.types.map((type, index) => (
-                        <div
-                          key={index}
-                          className="type-badge me-3 p-2 rounded text-white d-flex align-items-center"
-                          style={{
-                            backgroundColor: pokemonColors[type] + "80",
-                            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                          }}
-                        >
-                          <img
-                            src={pokemonTypeIcons[type]}
-                            alt={type}
-                            style={{ width: "30px", marginRight: "10px" }}
-                          />
-                          {type}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="stats-section mt-5">
-                <h4 className="text-center text-white text-uppercase mb-4">
-                  Statistiques
-                </h4>
-                <div className="row">
-                  <div className="col-md-6">
-                    {pokemon.stats.slice(0, 3).map((stat, index) => (
-                      <div key={index} className="stat-item mb-3">
-                        <div className="d-flex justify-content-between text-white mb-2">
-                          <span className="text-uppercase">{stat.name}</span>
-                          <span>{stat.base_stat}</span>
-                        </div>
-                        <div
-                          className="progress"
-                          style={{
-                            height: "10px",
-                            backgroundColor: "rgba(255,255,255,0.2)",
-                          }}
-                        >
-                          <div
-                            className="progress-bar"
-                            role="progressbar"
-                            style={{
-                              width: "0%",
-                              backgroundColor: "white",
-                              opacity: 0.8,
-                              transition: "width 1.5s ease-out",
-                            }}
-                            data-progress={`${(stat.base_stat / 255) * 100}`}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <div className="col-md-6">
-                    {pokemon.stats.slice(3).map((stat, index) => (
-                      <div key={index} className="stat-item mb-3">
-                        <div className="d-flex justify-content-between text-white mb-2">
-                          <span className="text-uppercase">{stat.name}</span>
-                          <span>{stat.base_stat}</span>
-                        </div>
-                        <div
-                          className="progress"
-                          style={{
-                            height: "10px",
-                            backgroundColor: "rgba(255,255,255,0.2)",
-                          }}
-                        >
-                          <div
-                            className="progress-bar"
-                            role="progressbar"
-                            style={{
-                              width: "0%",
-                              backgroundColor: "white",
-                              opacity: 0.8,
-                              transition: "width 1.5s ease-out",
-                            }}
-                            data-progress={`${(stat.base_stat / 255) * 100}`}
-                          ></div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              <div className="abilities-section mt-5 px-4 pb-4">
-                <h4 className="text-center text-white text-uppercase mb-4">
-                  Capacités
-                </h4>
-                <div className="row">
-                  {abilities.length > 0 ? (
-                    abilities.map((ability, index) => (
-                      <div key={index} className="col-md-4 mb-3">
-                        <div
-                          className="ability-card p-3 rounded text-white text-center"
+                <div className="card-body">
+                  <div className="row">
+                    {moves.map((move, index) => (
+                      <div key={index} className="col-md-6 mb-3">
+                        <div 
+                          className="move-card p-3 rounded text-white text-center h-100"
                           style={{
                             backgroundColor: "rgba(255,255,255,0.2)",
                             boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                           }}
                         >
                           <h5 className="text-uppercase mb-2">
-                            {ability.name
-                              ? ability.name.replace("-", " ")
-                              : "Capacité inconnue"}
+                            {move.name.replace("-", " ")}
                           </h5>
+                          <div className="move-details">
+                            <p className="mb-1">
+                              <strong>Type:</strong> {move.type}
+                            </p>
+                            <p className="mb-1">
+                              <strong>Puissance:</strong> {move.power}
+                            </p>
+                            <p className="mb-1">
+                              <strong>Précision:</strong> {move.accuracy}
+                            </p>
+                          </div>
                         </div>
                       </div>
-                    ))
-                  ) : (
-                    <div className="col-12 text-center text-white">
-                      Aucune capacité trouvée
-                    </div>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="row justify-content-center mt-5">
-        <div className="col-md-10 col-lg-8">
-          <div 
-            className="card moves-section border-0 shadow-lg"
-            style={{
-              background: gradientBackground,
-              borderRadius: "20px",
-              overflow: "hidden",
-            }}
-          >
-            <div className="card-header text-center text-white py-4">
-              <h4 className="text-uppercase">Mouvements</h4>
-            </div>
-            <div className="card-body">
-              <div className="row">
-                {moves.map((move, index) => (
-                  <div key={index} className="col-md-4 mb-3">
-                    <div 
-                      className="move-card p-3 rounded text-white text-center"
-                      style={{
-                        backgroundColor: "rgba(255,255,255,0.2)",
-                        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
-                      }}
-                    >
-                      <h5 className="text-uppercase mb-2">
-                        {move.name.replace("-", " ")}
-                      </h5>
-                      <div className="move-details">
-                        <p className="mb-1">
-                          <strong>Type:</strong> {move.type}
-                        </p>
-                        <p className="mb-1">
-                          <strong>Puissance:</strong> {move.power}
-                        </p>
-                        <p className="mb-1">
-                          <strong>Précision:</strong> {move.accuracy}
-                        </p>
-                      </div>
-                    </div>
+                    ))}
                   </div>
-                ))}
+                </div>
               </div>
             </div>
           </div>
