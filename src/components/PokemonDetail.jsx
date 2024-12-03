@@ -3,7 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import Lottie from "lottie-react";
-import { fetchPokemonDetails } from "../api/Api";
+import fetchPokemon from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
 
 function PokemonDetail() {
@@ -27,7 +27,7 @@ function PokemonDetail() {
   useEffect(() => {
     const loadPokemonDetails = async () => {
       try {
-        const pokemonData = await fetchPokemonDetails(id);
+        const pokemonData = await fetchPokemon(id);
         setPokemon(pokemonData);
         setTimeout(() => setIsLoaded(true), 500);
       } catch (err) {
