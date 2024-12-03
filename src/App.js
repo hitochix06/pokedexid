@@ -12,7 +12,7 @@ function App() {
 
   return (
     <Router>
-      <div className="bg-black min-h-screen text-white">
+      <div className="">
         <Navbar />
         <Routes>
           <Route
