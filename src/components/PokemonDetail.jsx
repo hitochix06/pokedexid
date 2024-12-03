@@ -6,7 +6,6 @@ import Lottie from "lottie-react";
 import { fetchPokemonDetails } from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
 
-
 function PokemonDetail() {
   const { id } = useParams();
   const [pokemon, setPokemon] = useState(null);
@@ -17,7 +16,10 @@ function PokemonDetail() {
     try {
       return require(`../assets/pokemon/${id}.png`);
     } catch (error) {
-      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
+      console.error(
+        `Erreur lors de l'importation de l'image du Pokémon ${id}`,
+        error
+      );
       return null;
     }
   };
@@ -35,6 +37,18 @@ function PokemonDetail() {
 
     loadPokemonDetails();
   }, [id]);
+
+  useEffect(() => {
+    if (isLoaded) {
+      const progressBars = document.querySelectorAll(".progress-bar");
+      progressBars.forEach((bar) => {
+        const progress = bar.getAttribute("data-progress");
+        requestAnimationFrame(() => {
+          bar.style.width = `${progress}%`;
+        });
+      });
+    }
+  }, [isLoaded]);
 
   if (error) return <div className="alert alert-danger">Erreur : {error}</div>;
   if (!pokemon) {
@@ -54,29 +68,31 @@ function PokemonDetail() {
 
   return (
     <div className="container py-5">
-      <Link 
-        to="/" 
+      <Link
+        to="/"
         className="btn btn-outline-secondary mb-4 shadow-sm animate__animated animate__fadeIn"
       >
         ← Retour à la liste
       </Link>
 
-      <div 
-        className={`card border-0 shadow-lg overflow-hidden animate__animated ${isLoaded ? 'animate__fadeIn' : ''}`}
-        style={{ 
+      <div
+        className={`card border-0 shadow-lg overflow-hidden animate__animated ${
+          isLoaded ? "animate__fadeIn" : ""
+        }`}
+        style={{
           background: gradientBackground,
-          transition: 'all 0.5s ease',
-          animationDelay: '0.2s'
+          transition: "all 0.5s ease",
+          animationDelay: "0.2s",
         }}
       >
         <div className="card-body position-relative text-white">
           {/* Numéro du Pokémon */}
-          <div 
+          <div
             className="position-absolute top-0 end-0 text-white-50 fs-1 fw-bold"
-            style={{ 
-              opacity: 0.2, 
-              transform: 'translate(20%, -20%)',
-              zIndex: 1 
+            style={{
+              opacity: 0.2,
+              transform: "translate(20%, -20%)",
+              zIndex: 1,
             }}
           >
             #{pokemon.id.toString().padStart(3, "0")}
@@ -85,9 +101,9 @@ function PokemonDetail() {
           {/* Titre et Image */}
           <div className="row align-items-center">
             <div className="col-md-6 text-center">
-              <h2 
+              <h2
                 className="card-title text-uppercase mb-4 animate__animated animate__fadeInLeft"
-                style={{ letterSpacing: '2px' }}
+                style={{ letterSpacing: "2px" }}
               >
                 {pokemon.name}
               </h2>
@@ -97,7 +113,7 @@ function PokemonDetail() {
                 className="img-fluid animate__animated animate__bounceIn"
                 style={{
                   maxWidth: "300px",
-                  filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.2))"
+                  filter: "drop-shadow(0 10px 15px rgba(0,0,0,0.2))",
                 }}
               />
             </div>
@@ -127,7 +143,7 @@ function PokemonDetail() {
                       style={{
                         width: "40px",
                         height: "40px",
-                        animation: 'pulse 2s infinite'
+                        animation: "pulse 2s infinite",
                       }}
                     />
                   ))}
@@ -141,19 +157,32 @@ function PokemonDetail() {
             <h4 className="text-center text-uppercase mb-4">Statistiques</h4>
             <div className="row">
               {pokemon.stats.map((stat, index) => (
-                <div key={index} className="col-md-6 mb-3 animate__animated animate__fadeInUp">
+                <div
+                  key={index}
+                  className="col-md-6 mb-3 animate__animated animate__fadeInUp"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="d-flex justify-content-between mb-1">
-                    <span className="text-uppercase">{stat.name}</span>
-                    <span>{stat.base_stat}</span>
+                    <span className="text-uppercase fw-bold ">{stat.name}</span>
+                    <span className="fw-bold">{stat.base_stat}</span>
                   </div>
-                  <div className="progress" style={{ height: "10px" }}>
+                  <div
+                    className="progress"
+                    style={{
+                      height: "12px",
+                      backgroundColor: `${primaryColor}20`,
+                    }}
+                  >
                     <div
-                      className="progress-bar"
+                      className="progress-bar progress-bar-striped progress-bar-animated"
                       role="progressbar"
                       style={{
-                        width: `${(stat.base_stat / 255) * 100}%`,
-                        backgroundColor: 'rgba(255,255,255,0.7)'
+                        width: "0%",
+                        backgroundColor: primaryColor,
+                        opacity: 0.8,
+                        transition: "width 1.5s ease-out",
                       }}
+                      data-progress={`${(stat.base_stat / 255) * 100}`}
                     ></div>
                   </div>
                 </div>
