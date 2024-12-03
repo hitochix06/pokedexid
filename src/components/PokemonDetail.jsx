@@ -11,6 +11,7 @@ function PokemonDetail() {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [moves, setMoves] = useState([]);
 
   const getPokemonImage = (id) => {
     try {
@@ -20,6 +21,25 @@ function PokemonDetail() {
         `Erreur lors de l'importation de l'image du Pokémon ${id}`,
         error
       );
+      return null;
+    }
+  };
+
+  const fetchMoveDetails = async (moveUrl) => {
+    try {
+      const response = await fetch(moveUrl);
+      const data = await response.json();
+      return {
+        name: data.name,
+        type: data.type.name,
+        power: data.power || 'N/A',
+        accuracy: data.accuracy || 'N/A',
+        description: data.effect_entries.find(
+          entry => entry.language.name === 'en'
+        )?.effect || 'Aucune description disponible'
+      };
+    } catch (error) {
+      console.error("Erreur lors de la récupération des détails du mouvement:", error);
       return null;
     }
   };
@@ -49,6 +69,20 @@ function PokemonDetail() {
       });
     }
   }, [isLoaded]);
+
+  useEffect(() => {
+    const loadMoveDetails = async () => {
+      if (pokemon && pokemon.moves) {
+        const moveDetailsPromises = pokemon.moves.map(move => 
+          fetchMoveDetails(move.url)
+        );
+        const moveDetails = await Promise.all(moveDetailsPromises);
+        setMoves(moveDetails.filter(move => move !== null));
+      }
+    };
+
+    loadMoveDetails();
+  }, [pokemon]);
 
   if (error) return <div className="alert alert-danger">Erreur : {error}</div>;
   if (!pokemon) {
@@ -246,6 +280,53 @@ function PokemonDetail() {
                     </div>
                   )}
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="row justify-content-center mt-5">
+        <div className="col-md-10 col-lg-8">
+          <div 
+            className="card moves-section border-0 shadow-lg"
+            style={{
+              background: gradientBackground,
+              borderRadius: "20px",
+              overflow: "hidden",
+            }}
+          >
+            <div className="card-header text-center text-white py-4">
+              <h4 className="text-uppercase">Mouvements</h4>
+            </div>
+            <div className="card-body">
+              <div className="row">
+                {moves.map((move, index) => (
+                  <div key={index} className="col-md-4 mb-3">
+                    <div 
+                      className="move-card p-3 rounded text-white text-center"
+                      style={{
+                        backgroundColor: "rgba(255,255,255,0.2)",
+                        boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                      }}
+                    >
+                      <h5 className="text-uppercase mb-2">
+                        {move.name.replace("-", " ")}
+                      </h5>
+                      <div className="move-details">
+                        <p className="mb-1">
+                          <strong>Type:</strong> {move.type}
+                        </p>
+                        <p className="mb-1">
+                          <strong>Puissance:</strong> {move.power}
+                        </p>
+                        <p className="mb-1">
+                          <strong>Précision:</strong> {move.accuracy}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

@@ -1,11 +1,11 @@
 export const fetchPokemon = async (id) => {
   try {
     const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
-    
+
     if (!response.ok) {
       throw new Error("Pokémon non trouvé");
     }
-    
+
     const data = await response.json();
 
     return new Promise((resolve) => {
@@ -23,6 +23,10 @@ export const fetchPokemon = async (id) => {
           })),
           abilities: data.abilities.map((ability) => ({
             name: ability.ability.name,
+          })),
+          moves: data.moves.slice(0, 10).map((move) => ({
+            name: move.move.name,
+            url: move.move.url,
           })),
         });
       }, 500);
