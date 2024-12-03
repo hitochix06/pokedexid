@@ -15,12 +15,12 @@ function Navigation() {
         <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
           <Nav>
             <NavDropdown
-              title="FR"
+              title="Langue"
               id="basic-nav-dropdown"
               className="couleur-text custom-dropdown"
             >
-              <NavDropdown.Item href="#action/3.1">EN</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">CH</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.1">FR</NavDropdown.Item>
+              <NavDropdown.Item href="#action/3.2">JP</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
