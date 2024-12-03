@@ -129,14 +129,9 @@ function Card3D({ pokemonUrl, index }) {
             );
             border: 5px solid rgba(255, 255, 255, 0.3);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: 
-              cardEntrance 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
-              breatheAnimation 4s ease-in-out infinite,
+            animation: breatheAnimation 4s ease-in-out infinite,
               cardRotation 8s ease-in-out infinite;
-            animation-delay: 
-              calc(${index} * 0.1s), 
-              0s, 
-              calc(${index} * 0.5s);
+            animation-delay: 0s, calc(${index} * 0.5s);
           }
 
           .card-link {
@@ -231,28 +226,45 @@ function Card3D({ pokemonUrl, index }) {
           }
 
           @keyframes breatheAnimation {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.02); }
+            0%,
+            100% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.02);
+            }
           }
 
           @keyframes typeIconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%,
+            100% {
+              transform: scale(1);
+            }
+            50% {
+              transform: scale(1.1);
+            }
           }
 
           @keyframes cardRotation {
-            0% { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
-            25% { transform: perspective(1000px) rotateY(10deg) rotateX(5deg); }
-            50% { transform: perspective(1000px) rotateY(-10deg) rotateX(-5deg); }
-            75% { transform: perspective(1000px) rotateY(5deg) rotateX(3deg); }
-            100% { transform: perspective(1000px) rotateY(0deg) rotateX(0deg); }
+            0% {
+              transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+            }
+            25% {
+              transform: perspective(1000px) rotateY(10deg) rotateX(5deg);
+            }
+            50% {
+              transform: perspective(1000px) rotateY(-10deg) rotateX(-5deg);
+            }
+            75% {
+              transform: perspective(1000px) rotateY(5deg) rotateX(3deg);
+            }
+            100% {
+              transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+            }
           }
 
           .pokemon-card-modern:hover .pokemon-image {
-            transform: 
-              translateZ(50px) 
-              scale(1.1) 
-              rotate(5deg);
+            transform: translateZ(50px) scale(1.1) rotate(5deg);
           }
 
           .pokemon-card-modern:hover {
