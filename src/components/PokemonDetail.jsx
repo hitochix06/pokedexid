@@ -139,27 +139,54 @@ function PokemonDetail() {
 
               <div className="stats-section mt-5">
                 <h4 className="text-center text-white text-uppercase mb-4">Statistiques</h4>
-                {pokemon.stats.map((stat, index) => (
-                  <div key={index} className="stat-item mb-3">
-                    <div className="d-flex justify-content-between text-white mb-2">
-                      <span className="text-uppercase">{stat.name}</span>
-                      <span>{stat.base_stat}</span>
-                    </div>
-                    <div className="progress" style={{ height: '10px', backgroundColor: 'rgba(255,255,255,0.2)' }}>
-                      <div
-                        className="progress-bar"
-                        role="progressbar"
-                        style={{
-                          width: '0%',
-                          backgroundColor: 'white',
-                          opacity: 0.8,
-                          transition: 'width 1.5s ease-out'
-                        }}
-                        data-progress={`${(stat.base_stat / 255) * 100}`}
-                      ></div>
-                    </div>
+                <div className="row">
+                  <div className="col-md-6">
+                    {pokemon.stats.slice(0, 3).map((stat, index) => (
+                      <div key={index} className="stat-item mb-3">
+                        <div className="d-flex justify-content-between text-white mb-2">
+                          <span className="text-uppercase">{stat.name}</span>
+                          <span>{stat.base_stat}</span>
+                        </div>
+                        <div className="progress" style={{ height: '10px', backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                          <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{
+                              width: '0%',
+                              backgroundColor: 'white',
+                              opacity: 0.8,
+                              transition: 'width 1.5s ease-out'
+                            }}
+                            data-progress={`${(stat.base_stat / 255) * 100}`}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                ))}
+                  <div className="col-md-6">
+                    {pokemon.stats.slice(3).map((stat, index) => (
+                      <div key={index} className="stat-item mb-3">
+                        <div className="d-flex justify-content-between text-white mb-2">
+                          <span className="text-uppercase">{stat.name}</span>
+                          <span>{stat.base_stat}</span>
+                        </div>
+                        <div className="progress" style={{ height: '10px', backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                          <div
+                            className="progress-bar"
+                            role="progressbar"
+                            style={{
+                              width: '0%',
+                              backgroundColor: 'white',
+                              opacity: 0.8,
+                              transition: 'width 1.5s ease-out'
+                            }}
+                            data-progress={`${(stat.base_stat / 255) * 100}`}
+                          ></div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
