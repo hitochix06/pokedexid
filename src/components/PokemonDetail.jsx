@@ -16,7 +16,10 @@ function PokemonDetail() {
     try {
       return require(`../assets/pokemon/${id}.png`);
     } catch (error) {
-      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
+      console.error(
+        `Erreur lors de l'importation de l'image du Pokémon ${id}`,
+        error
+      );
       return null;
     }
   };
@@ -51,7 +54,11 @@ function PokemonDetail() {
   if (!pokemon) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        <Lottie animationData={animationPokeball} loop={true} className="w-25" />
+        <Lottie
+          animationData={animationPokeball}
+          loop={true}
+          className="w-25"
+        />
       </div>
     );
   }
@@ -60,22 +67,29 @@ function PokemonDetail() {
   const secondaryColor = pokemonColors[pokemon.types[1]] || primaryColor;
   const gradientBackground = `linear-gradient(45deg, ${primaryColor}, ${secondaryColor})`;
 
+  const abilities = pokemon?.abilities || [];
+
   return (
-    <div className="container-fluid pokemon-detail" style={{ backgroundColor: primaryColor + '20' }}>
+    <div
+      className="container-fluid pokemon-detail"
+      style={{ backgroundColor: primaryColor + "20" }}
+    >
       <div className="row">
         <div className="col-12 py-4">
-          <Link to="/" className="btn btn-outline-dark mb-3">← Retour</Link>
+          <Link to="/" className="btn btn-outline-dark mb-3">
+            ← Retour
+          </Link>
         </div>
       </div>
 
       <div className="row justify-content-center">
         <div className="col-md-10 col-lg-8">
-          <div 
-            className="card pokemon-card border-0 shadow-lg" 
-            style={{ 
-              background: gradientBackground, 
-              borderRadius: '20px',
-              overflow: 'hidden'
+          <div
+            className="card pokemon-card border-0 shadow-lg"
+            style={{
+              background: gradientBackground,
+              borderRadius: "20px",
+              overflow: "hidden",
             }}
           >
             <div className="card-header text-center text-white py-4">
@@ -93,9 +107,9 @@ function PokemonDetail() {
                     alt={pokemon.name}
                     className="img-fluid pokemon-image"
                     style={{
-                      maxWidth: '350px',
-                      filter: 'drop-shadow(0 15px 20px rgba(0,0,0,0.3))',
-                      transform: 'scale(1.2)'
+                      maxWidth: "350px",
+                      filter: "drop-shadow(0 15px 20px rgba(0,0,0,0.3))",
+                      transform: "scale(1.2)",
                     }}
                   />
                 </div>
@@ -116,18 +130,18 @@ function PokemonDetail() {
                     <h5 className="text-white mb-3">Types</h5>
                     <div className="d-flex justify-content-start">
                       {pokemon.types.map((type, index) => (
-                        <div 
-                          key={index} 
+                        <div
+                          key={index}
                           className="type-badge me-3 p-2 rounded text-white d-flex align-items-center"
-                          style={{ 
-                            backgroundColor: pokemonColors[type] + '80',
-                            boxShadow: '0 4px 6px rgba(0,0,0,0.1)'
+                          style={{
+                            backgroundColor: pokemonColors[type] + "80",
+                            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                           }}
                         >
                           <img
                             src={pokemonTypeIcons[type]}
                             alt={type}
-                            style={{ width: '30px', marginRight: '10px' }}
+                            style={{ width: "30px", marginRight: "10px" }}
                           />
                           {type}
                         </div>
@@ -138,7 +152,9 @@ function PokemonDetail() {
               </div>
 
               <div className="stats-section mt-5">
-                <h4 className="text-center text-white text-uppercase mb-4">Statistiques</h4>
+                <h4 className="text-center text-white text-uppercase mb-4">
+                  Statistiques
+                </h4>
                 <div className="row">
                   <div className="col-md-6">
                     {pokemon.stats.slice(0, 3).map((stat, index) => (
@@ -147,15 +163,21 @@ function PokemonDetail() {
                           <span className="text-uppercase">{stat.name}</span>
                           <span>{stat.base_stat}</span>
                         </div>
-                        <div className="progress" style={{ height: '10px', backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                        <div
+                          className="progress"
+                          style={{
+                            height: "10px",
+                            backgroundColor: "rgba(255,255,255,0.2)",
+                          }}
+                        >
                           <div
                             className="progress-bar"
                             role="progressbar"
                             style={{
-                              width: '0%',
-                              backgroundColor: 'white',
+                              width: "0%",
+                              backgroundColor: "white",
                               opacity: 0.8,
-                              transition: 'width 1.5s ease-out'
+                              transition: "width 1.5s ease-out",
                             }}
                             data-progress={`${(stat.base_stat / 255) * 100}`}
                           ></div>
@@ -170,15 +192,21 @@ function PokemonDetail() {
                           <span className="text-uppercase">{stat.name}</span>
                           <span>{stat.base_stat}</span>
                         </div>
-                        <div className="progress" style={{ height: '10px', backgroundColor: 'rgba(255,255,255,0.2)' }}>
+                        <div
+                          className="progress"
+                          style={{
+                            height: "10px",
+                            backgroundColor: "rgba(255,255,255,0.2)",
+                          }}
+                        >
                           <div
                             className="progress-bar"
                             role="progressbar"
                             style={{
-                              width: '0%',
-                              backgroundColor: 'white',
+                              width: "0%",
+                              backgroundColor: "white",
                               opacity: 0.8,
-                              transition: 'width 1.5s ease-out'
+                              transition: "width 1.5s ease-out",
                             }}
                             data-progress={`${(stat.base_stat / 255) * 100}`}
                           ></div>
@@ -186,6 +214,37 @@ function PokemonDetail() {
                       </div>
                     ))}
                   </div>
+                </div>
+              </div>
+
+              <div className="abilities-section mt-5 px-4 pb-4">
+                <h4 className="text-center text-white text-uppercase mb-4">
+                  Capacités
+                </h4>
+                <div className="row">
+                  {abilities.length > 0 ? (
+                    abilities.map((ability, index) => (
+                      <div key={index} className="col-md-4 mb-3">
+                        <div
+                          className="ability-card p-3 rounded text-white text-center"
+                          style={{
+                            backgroundColor: "rgba(255,255,255,0.2)",
+                            boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
+                          }}
+                        >
+                          <h5 className="text-uppercase mb-2">
+                            {ability.name
+                              ? ability.name.replace("-", " ")
+                              : "Capacité inconnue"}
+                          </h5>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="col-12 text-center text-white">
+                      Aucune capacité trouvée
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
