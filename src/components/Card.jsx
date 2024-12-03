@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from "react";
-import AnimatedCard from "react-animated-3d-card";
+import { Link } from "react-router-dom";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
-import { Link } from "react-router-dom";
 
-function Card({ pokemonUrl, index }) {
+function Card3D({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
-  const [isVisible, setIsVisible] = useState(false);
+  const [tiltPosition, setTiltPosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -24,109 +23,159 @@ function Card({ pokemonUrl, index }) {
         });
       } catch (err) {
         setError(err.message);
-      } finally {
-        setTimeout(() => setIsVisible(true), index * 200);
       }
     };
 
     fetchData();
-  }, [pokemonUrl, index]);
+  }, [pokemonUrl]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
-  if (!pokemon) {
-    return null;
-  }
+    const angleX = (centerY - e.clientY) / 20;
+    const angleY = -(centerX - e.clientX) / 20;
+
+    setTiltPosition({ x: angleX, y: angleY });
+  };
+
+  const handleMouseLeave = () => {
+    setTiltPosition({ x: 0, y: 0 });
+  };
+
+  if (error) return <div>{error}</div>;
+  if (!pokemon) return null;
+
+  const primaryType = pokemon.types[0];
+  const cardBgColor = pokemonColors[primaryType] || '#f0f0f0';
 
   return (
-    <div className="card-container">
-      <div className={`animated-card ${isVisible ? "visible" : ""}`}>
-        <Link to={`/pokemon/${pokemon.id}`} style={{ textDecoration: "none" }}>
-          <AnimatedCard
-            style={{
-              width: "18rem",
-              margin: "10px",
-              backgroundColor: pokemonColors[pokemon.types[0]] || "",
-              borderRadius: "0.5rem",
-              cursor: "pointer",
-              position: "relative",
-            }}
-           
-          >
-            <div style={{ padding: "1rem" }}>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "flex-start",
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: "4rem",
-                    fontWeight: "bold",
-                    color: "rgba(255, 255, 255, 0.5)",
-                  }}
-                >
-                  #{pokemon.id.toString().padStart(3, "0")}
-                </span>
-                <div>
-                  {pokemon.types.map((type, index) => (
-                    <img
-                      key={index}
-                      src={pokemonTypeIcons[type]}
-                      alt={type}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        marginLeft: "5px",
-                      }}
-                    />
-                  ))}
-                </div>
-              </div>
-              <div className="text-center">
-                <h3 style={{ textTransform: "uppercase", color: "white" }}>
-                  {pokemon.name}
-                </h3>
-                <img
-                  src={pokemon.image}
-                  alt={pokemon.name}
-                  style={{ width: "100%", height: "auto" }}
-                  className="animate__animated animate__bounce"
-                />
-              </div>
-            </div>
-          </AnimatedCard>
-        </Link>
-      </div>
+    <div 
+      className="pokemon-card-3d"
+      style={{
+        transform: `perspective(1000px) rotateX(${tiltPosition.x}deg) rotateY(${tiltPosition.y}deg)`,
+        backgroundColor: cardBgColor,
+      }}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+    >
+      <Link to={`/pokemon/${pokemon.id}`} className="card-link">
+        <div className="card-header">
+          <span className="pokemon-number">#{pokemon.id.toString().padStart(3, "0")}</span>
+          <div className="type-icons">
+            {pokemon.types.map((type, index) => (
+              <img
+                key={index}
+                src={pokemonTypeIcons[type]}
+                alt={type}
+                className="type-icon"
+              />
+            ))}
+          </div>
+        </div>
+
+        <div className="pokemon-image-container">
+          <img 
+            src={pokemon.image} 
+            alt={pokemon.name} 
+            className="pokemon-image" 
+          />
+        </div>
+
+        <div className="pokemon-name">
+          {pokemon.name.toUpperCase()}
+        </div>
+      </Link>
+
       <style jsx>{`
-        .pokemon-grid {
+        .pokemon-card-3d {
+          width: 250px;
+          height: 350px;
+          border-radius: 20px;
+          box-shadow: 
+            0 10px 30px rgba(0,0,0,0.2), 
+            0 15px 40px rgba(0,0,0,0.1);
+          overflow: hidden;
+          margin: 20px;
+          position: relative;
+          cursor: pointer;
+          transition: all 0.1s ease;
+          transform-style: preserve-3d;
+          background: linear-gradient(
+            145deg, 
+            rgba(255,255,255,0.1), 
+            rgba(0,0,0,0.05)
+          );
+        }
+
+        .card-link {
+          text-decoration: none;
+          color: white;
+          display: block;
+          height: 100%;
+          padding: 20px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .card-header {
           display: flex;
-          flex-wrap: wrap;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 15px;
+        }
+
+        .pokemon-number {
+          font-size: 2.2rem;
+          font-weight: bold;
+          opacity: 0.7;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .type-icons {
+          display: flex;
+          gap: 8px;
+        }
+
+        .type-icon {
+          width: 30px;
+          height: 30px;
+          filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+        }
+
+        .pokemon-image-container {
+          display: flex;
           justify-content: center;
-          gap: 20px;
+          align-items: center;
+          height: 200px;
+          perspective: 500px;
         }
 
-        .card-container {
-          perspective: 1000px;
+        .pokemon-image {
+          max-width: 180px;
+          max-height: 180px;
+          transition: transform 0.3s ease;
+          transform: translateZ(50px);
         }
 
-        .animated-card {
-          opacity: 0;
-          transform: translateY(20px);
-          transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+        .pokemon-name {
+          text-align: center;
+          font-weight: bold;
+          font-size: 1.3rem;
+          padding: 15px 0;
+          background-color: rgba(0,0,0,0.15);
+          letter-spacing: 1px;
+          text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
         }
 
-        .animated-card.visible {
-          opacity: 1;
-          transform: translateY(0);
+        .pokemon-card-3d:hover .pokemon-image {
+          transform: translateZ(80px);
         }
       `}</style>
     </div>
   );
 }
 
-export default Card;
+export default Card3D;
