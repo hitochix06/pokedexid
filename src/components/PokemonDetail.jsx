@@ -268,7 +268,7 @@ function PokemonDetail() {
                                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                               }}
                             >
-                              <h5 className="text-uppercase mb-2">
+                              <h5 className="text-uppercase mb-2 " style={{ fontSize: "14px" }}>
                                 {ability.name
                                   ? ability.name.replace("-", " ")
                                   : "Capacité inconnue"}
