@@ -304,6 +304,70 @@ function Card3D({ pokemonUrl, index }) {
           text-transform: capitalize;
           color: #333;
         }
+
+        @media (max-width: 768px) {
+          .pokemon-card-modern {
+            width: 240px;
+            height: 360px;
+          }
+
+          .pokemon-number {
+            font-size: 2rem;
+          }
+
+          .type-icon {
+            width: 30px;
+            height: 30px;
+          }
+
+          .pokemon-image {
+            max-width: 160px;
+            max-height: 160px;
+          }
+
+          .pokemon-name {
+            font-size: 1.2rem;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .pokemon-card-modern {
+            width: 200px;
+            height: 300px;
+            margin: 10px;
+          }
+
+          .card-link {
+            padding: 15px;
+          }
+
+          .pokemon-number {
+            font-size: 1.5rem;
+          }
+
+          .type-icon {
+            width: 25px;
+            height: 25px;
+          }
+
+          .type-name {
+            font-size: 0.8rem;
+          }
+
+          .pokemon-image-container {
+            height: 180px;
+          }
+
+          .pokemon-image {
+            max-width: 130px;
+            max-height: 130px;
+          }
+
+          .pokemon-name {
+            font-size: 1rem;
+            padding: 10px 0;
+          }
+        }
       `}</style>
     </div>
   );
