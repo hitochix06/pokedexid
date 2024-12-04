@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { Form, FormControl, Container, Row, Col, Alert } from "react-bootstrap";
 
@@ -8,7 +7,7 @@ function Search({ onSearch }) {
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (typeof onSearch === 'function') {
+      if (typeof onSearch === "function") {
         onSearch(searchTerm);
       }
     }, 300);
@@ -30,16 +29,20 @@ function Search({ onSearch }) {
     <Container fluid>
       <Row className="justify-content-center">
         <Col xs={12} sm={8} md={6} lg={4}>
-          <Form className="d-flex flex-column align-items-center my-3">
-            <FormControl
-              type="search"
-              placeholder="Rechercher un Pokémon"
-              className="py-1 form-control-sm mb-2"
-              aria-label="Search"
-              value={searchTerm}
-              onChange={handleChange}
-            />
-            {error && <Alert variant="danger">{error}</Alert>}
+          <Form className="search-container my-4">
+            <div className="search-wrapper">
+              <i className="fas fa-search search-icon"></i>
+              <FormControl
+                type="search"
+                placeholder="Rechercher un Pokémon..."
+                className="modern-search-input"
+                aria-label="Search"
+                value={searchTerm}
+                onChange={handleChange}
+                autoComplete="off"
+              />
+            </div>
+            {error && <Alert variant="danger" className="mt-2">{error}</Alert>}
           </Form>
         </Col>
       </Row>
