@@ -15,8 +15,8 @@ function TypeFilter({ selectedType, onTypeSelect }) {
             key={type}
             className={`type-button ${selectedType === type ? 'selected' : ''}`}
             style={{
-              backgroundColor: pokemonColors[type]?.primary || '#000000',
-              borderColor: pokemonColors[type]?.secondary || '#000000'
+              backgroundColor: pokemonColors[type],
+              borderColor: pokemonColors[type]
             }}
             onClick={() => onTypeSelect(type)}
           >
