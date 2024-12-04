@@ -81,12 +81,14 @@ function Card3D({ pokemonUrl, index }) {
             </span>
             <div className="type-icons">
               {pokemon.types.map((type, index) => (
-                <img
-                  key={index}
-                  src={pokemonTypeIcons[type]}
-                  alt={type}
-                  className="type-icon"
-                />
+                <div key={index} className="type-container">
+                  <img
+                    src={pokemonTypeIcons[type]}
+                    alt={type}
+                    className="type-icon"
+                  />
+                  <span className="type-name">{type}</span>
+                </div>
               ))}
             </div>
           </div>
@@ -161,6 +163,20 @@ function Card3D({ pokemonUrl, index }) {
           .type-icons {
             display: flex;
             gap: 10px;
+          }
+
+          .type-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+          }
+
+          .type-name {
+            font-size: 0.9rem;
+            font-weight: bold;
+            text-transform: capitalize;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
           }
 
           .type-icon {
