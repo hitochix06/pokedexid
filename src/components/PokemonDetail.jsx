@@ -109,7 +109,24 @@ function PokemonDetail() {
     >
       <div className="row">
         <div className="col-12 py-4">
-          <Link to="/" className="btn btn-outline-dark mb-3">
+          <Link 
+            to="/" 
+            className="btn mb-3"
+            style={{
+              color: "#fff",
+              backgroundColor: primaryColor,
+              borderColor: primaryColor,
+              transition: "all 0.3s ease",
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = `${primaryColor}dd`;
+              e.currentTarget.style.borderColor = `${primaryColor}dd`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = primaryColor;
+              e.currentTarget.style.borderColor = primaryColor;
+            }}
+          >
             ← Retour
           </Link>
         </div>
