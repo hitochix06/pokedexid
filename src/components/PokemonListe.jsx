@@ -4,6 +4,7 @@ import Lottie from "lottie-react";
 import animationPokeball from "../assets/Animationpokeball.json";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
+import TypeFilter from './TypeFilter';
 
 function Card3D({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
@@ -380,22 +381,51 @@ function Card3D({ pokemonUrl, index }) {
 
 function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [loading, setLoading] = useState(true);
+  const [selectedType, setSelectedType] = useState(null);
+  const [filteredPokemon, setFilteredPokemon] = useState([]);
   const pokemonPerPage = 20;
+
+  // Fonction pour filtrer les Pokémon par type
+  const filterPokemonByType = async (pokemonData) => {
+    if (!selectedType) return true;
+    
+    try {
+      const response = await fetch(pokemonData.url);
+      const data = await response.json();
+      return data.types.some(type => type.type.name === selectedType);
+    } catch (error) {
+      console.error("Erreur lors du filtrage:", error);
+      return false;
+    }
+  };
+
+  // Effet pour filtrer les Pokémon quand le type sélectionné change
+  useEffect(() => {
+    const filterPokemon = async () => {
+      setLoading(true);
+      if (!selectedType) {
+        setFilteredPokemon(pokemonList);
+      } else {
+        const filtered = await Promise.all(
+          pokemonList.map(async (pokemon) => {
+            const shouldInclude = await filterPokemonByType(pokemon);
+            return shouldInclude ? pokemon : null;
+          })
+        );
+        setFilteredPokemon(filtered.filter(pokemon => pokemon !== null));
+      }
+      setLoading(false);
+    };
+
+    filterPokemon();
+  }, [selectedType, pokemonList]);
+
   const indexOfLastPokemon = currentPage * pokemonPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonPerPage;
-  const currentPokemon = pokemonList.slice(
+  const currentPokemon = filteredPokemon.slice(
     indexOfFirstPokemon,
     indexOfLastPokemon
   );
-
-  useEffect(() => {
-    setLoading(true);
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, [pokemonList, currentPage]);
 
   if (loading) {
     return (
@@ -414,6 +444,14 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
 
   return (
     <div className="container p-3">
+      <TypeFilter
+        selectedType={selectedType}
+        onTypeSelect={(type) => {
+          setSelectedType(type);
+          onPageChange(1);
+        }}
+      />
+      
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
         {currentPokemon.map((pokemon, index) => (
           <div className="col" key={pokemon.name}>
@@ -429,7 +467,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
           </div>
         )}
       </div>
-      {pokemonList.length > pokemonPerPage && (
+      {!selectedType && pokemonList.length > pokemonPerPage && (
         <nav aria-label="Navigation des pages de Pokémon">
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
