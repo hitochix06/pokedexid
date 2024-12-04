@@ -385,22 +385,21 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const pokemonPerPage = 20;
 
-  // Fonction pour filtrer les Pokémon par type
-  const filterPokemonByType = async (pokemonData) => {
-    if (!selectedType) return true;
-    
-    try {
-      const response = await fetch(pokemonData.url);
-      const data = await response.json();
-      return data.types.some(type => type.type.name === selectedType);
-    } catch (error) {
-      console.error("Erreur lors du filtrage:", error);
-      return false;
-    }
-  };
-
-  // Effet pour filtrer les Pokémon quand le type sélectionné change
+  // Déplacer filterPokemonByType à l'intérieur du useEffect pour éviter la dépendance cyclique
   useEffect(() => {
+    const filterPokemonByType = async (pokemonData) => {
+      if (!selectedType) return true;
+      
+      try {
+        const response = await fetch(pokemonData.url);
+        const data = await response.json();
+        return data.types.some(type => type.type.name === selectedType);
+      } catch (error) {
+        console.error("Erreur lors du filtrage:", error);
+        return false;
+      }
+    };
+
     const filterPokemon = async () => {
       setLoading(true);
       if (!selectedType) {
