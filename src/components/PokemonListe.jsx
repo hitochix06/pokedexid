@@ -384,8 +384,8 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [selectedType, setSelectedType] = useState(null);
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const pokemonPerPage = 20;
+  const [showScrollButton, setShowScrollButton] = useState(false);
 
-  // Déplacer filterPokemonByType à l'intérieur du useEffect pour éviter la dépendance cyclique
   useEffect(() => {
     const filterPokemonByType = async (pokemonData) => {
       if (!selectedType) return true;
@@ -418,6 +418,22 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
 
     filterPokemon();
   }, [selectedType, pokemonList]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowScrollButton(window.scrollY > 300);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
 
   const indexOfLastPokemon = currentPage * pokemonPerPage;
   const indexOfFirstPokemon = indexOfLastPokemon - pokemonPerPage;
@@ -493,6 +509,76 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
           </ul>
         </nav>
       )}
+
+      {showScrollButton && (
+        <button 
+          className="scroll-to-top-button"
+          onClick={scrollToTop}
+          aria-label="Retour en haut"
+        >
+          ↑
+        </button>
+      )}
+
+      <style jsx>{`
+        .scroll-to-top-button {
+          position: fixed;
+          bottom: 30px;
+          right: 30px;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background-color: #ff5350;
+          color: white;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 24px;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+          transition: all 0.3s ease;
+          z-index: 1000;
+          animation: fadeIn 0.5s ease-in-out, bounce 2s infinite;
+        }
+
+        .scroll-to-top-button:hover {
+          transform: translateY(-3px);
+          background-color: #ff3d3a;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+          animation: none;
+        }
+
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes bounce {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-5px);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .scroll-to-top-button {
+            bottom: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
