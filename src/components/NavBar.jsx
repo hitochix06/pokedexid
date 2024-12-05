@@ -10,8 +10,8 @@ function Navigation() {
 
   // Définition des noms de langues avec leurs drapeaux
   const languageNames = {
-    fr: { name: "Français", flag: "🇫🇷" },
     en: { name: "English", flag: "🇬🇧" },
+    fr: { name: "Français", flag: "🇫🇷" },
     ja: { name: "日本語", flag: "🇯🇵" },
   };
 
