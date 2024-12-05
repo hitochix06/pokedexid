@@ -7,6 +7,7 @@ import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import TypeFilter from "./TypeFilter";
 import { useLanguage } from "../context/LanguageContext";
 import { translateType } from "../utils/typeTranslations";
+import { translatePokemonName } from "../utils/pokemonTranslations";
 
 function Card3D({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
@@ -120,7 +121,7 @@ function Card3D({ pokemonUrl, index }) {
           </div>
 
           <div className="pokemon-name">
-            {pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1)}
+            {translatePokemonName(pokemon.name, language)}
           </div>
         </Link>
 
