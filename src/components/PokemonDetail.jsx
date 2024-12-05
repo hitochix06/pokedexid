@@ -58,7 +58,7 @@ function PokemonDetail() {
       try {
         const pokemonData = await fetchPokemon(id);
         setPokemon(pokemonData);
-        const minimumLoadingTime = 5000; // 5 secondes
+        const minimumLoadingTime = 1000;
         await new Promise((resolve) => setTimeout(resolve, minimumLoadingTime));
         setIsLoaded(true);
       } catch (err) {
@@ -66,7 +66,7 @@ function PokemonDetail() {
       }
     };
 
-    setIsLoaded(false); // Réinitialiser l'état de chargement
+    setIsLoaded(false);
     loadPokemonDetails();
   }, [id]);
 
@@ -242,7 +242,7 @@ function PokemonDetail() {
                                   width: "0%",
                                   backgroundColor: "white",
                                   opacity: 0.8,
-                                  transition: "width 1.5s ease-out",
+                                  transition: "width 0.5s ease-out",
                                 }}
                                 data-progress={`${
                                   (stat.base_stat / 255) * 100
@@ -275,7 +275,7 @@ function PokemonDetail() {
                                   width: "0%",
                                   backgroundColor: "white",
                                   opacity: 0.8,
-                                  transition: "width 1.5s ease-out",
+                                  transition: "width 0.5s ease-out",
                                 }}
                                 data-progress={`${
                                   (stat.base_stat / 255) * 100
