@@ -32,14 +32,17 @@ function PokemonDetail() {
       return {
         name: data.name,
         type: data.type.name,
-        power: data.power || 'N/A',
-        accuracy: data.accuracy || 'N/A',
-        description: data.effect_entries.find(
-          entry => entry.language.name === 'en'
-        )?.effect || 'Aucune description disponible'
+        power: data.power || "N/A",
+        accuracy: data.accuracy || "N/A",
+        description:
+          data.effect_entries.find((entry) => entry.language.name === "en")
+            ?.effect || "Aucune description disponible",
       };
     } catch (error) {
-      console.error("Erreur lors de la récupération des détails du mouvement:", error);
+      console.error(
+        "Erreur lors de la récupération des détails du mouvement:",
+        error
+      );
       return null;
     }
   };
@@ -49,12 +52,15 @@ function PokemonDetail() {
       try {
         const pokemonData = await fetchPokemon(id);
         setPokemon(pokemonData);
-        setTimeout(() => setIsLoaded(true), 500);
+        const minimumLoadingTime = 5000; // 5 secondes
+        await new Promise((resolve) => setTimeout(resolve, minimumLoadingTime));
+        setIsLoaded(true);
       } catch (err) {
         setError(err.message);
       }
     };
 
+    setIsLoaded(false); // Réinitialiser l'état de chargement
     loadPokemonDetails();
   }, [id]);
 
@@ -73,11 +79,11 @@ function PokemonDetail() {
   useEffect(() => {
     const loadMoveDetails = async () => {
       if (pokemon && pokemon.moves) {
-        const moveDetailsPromises = pokemon.moves.map(move => 
+        const moveDetailsPromises = pokemon.moves.map((move) =>
           fetchMoveDetails(move.url)
         );
         const moveDetails = await Promise.all(moveDetailsPromises);
-        setMoves(moveDetails.filter(move => move !== null));
+        setMoves(moveDetails.filter((move) => move !== null));
       }
     };
 
@@ -104,13 +110,11 @@ function PokemonDetail() {
   const abilities = pokemon?.abilities || [];
 
   return (
-    <div
-      className="container-fluid pokemon-detail"
-    >
+    <div className="container-fluid pokemon-detail">
       <div className="row">
         <div className="col-12 py-4">
-          <Link 
-            to="/" 
+          <Link
+            to="/"
             className="btn mb-3"
             style={{
               color: "#fff",
@@ -213,7 +217,9 @@ function PokemonDetail() {
                         {pokemon.stats.slice(0, 3).map((stat, index) => (
                           <div key={index} className="stat-item mb-3">
                             <div className="d-flex justify-content-between text-white mb-2">
-                              <span className="text-uppercase">{stat.name}</span>
+                              <span className="text-uppercase">
+                                {stat.name}
+                              </span>
                               <span>{stat.base_stat}</span>
                             </div>
                             <div
@@ -232,7 +238,9 @@ function PokemonDetail() {
                                   opacity: 0.8,
                                   transition: "width 1.5s ease-out",
                                 }}
-                                data-progress={`${(stat.base_stat / 255) * 100}`}
+                                data-progress={`${
+                                  (stat.base_stat / 255) * 100
+                                }`}
                               ></div>
                             </div>
                           </div>
@@ -242,7 +250,9 @@ function PokemonDetail() {
                         {pokemon.stats.slice(3).map((stat, index) => (
                           <div key={index} className="stat-item mb-3">
                             <div className="d-flex justify-content-between text-white mb-2">
-                              <span className="text-uppercase">{stat.name}</span>
+                              <span className="text-uppercase">
+                                {stat.name}
+                              </span>
                               <span>{stat.base_stat}</span>
                             </div>
                             <div
@@ -261,7 +271,9 @@ function PokemonDetail() {
                                   opacity: 0.8,
                                   transition: "width 1.5s ease-out",
                                 }}
-                                data-progress={`${(stat.base_stat / 255) * 100}`}
+                                data-progress={`${
+                                  (stat.base_stat / 255) * 100
+                                }`}
                               ></div>
                             </div>
                           </div>
@@ -285,7 +297,10 @@ function PokemonDetail() {
                                 boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
                               }}
                             >
-                              <h5 className="text-uppercase mb-2 " style={{ fontSize: "14px" }}>
+                              <h5
+                                className="text-uppercase mb-2 "
+                                style={{ fontSize: "14px" }}
+                              >
                                 {ability.name
                                   ? ability.name.replace("-", " ")
                                   : "Capacité inconnue"}
@@ -305,7 +320,7 @@ function PokemonDetail() {
             </div>
 
             <div className="col-md-6 mb-4">
-              <div 
+              <div
                 className="card moves-section border-0 shadow-lg h-100"
                 style={{
                   background: gradientBackground,
@@ -321,7 +336,7 @@ function PokemonDetail() {
                   <div className="row">
                     {moves.map((move, index) => (
                       <div key={index} className="col-md-6 mb-3">
-                        <div 
+                        <div
                           className="move-card p-3 rounded text-white text-center h-100"
                           style={{
                             backgroundColor: "rgba(255,255,255,0.2)",
