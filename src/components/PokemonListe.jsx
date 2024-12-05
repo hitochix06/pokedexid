@@ -388,7 +388,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const pokemonPerPage = 20;
   const [showScrollButton, setShowScrollButton] = useState(false);
-  const { language } = useLanguage();
+  const totalPages = Math.ceil(filteredPokemon.length / pokemonPerPage);
 
   const handlePageChange = async (newPage) => {
     setLoading(true);
@@ -453,6 +453,32 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
     indexOfLastPokemon
   );
 
+  const renderPageNumbers = () => {
+    const pageNumbers = [];
+    const maxVisiblePages = 5;
+    let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
+    let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+
+    // Ajuster startPage si on est proche de la fin
+    if (endPage - startPage + 1 < maxVisiblePages) {
+      startPage = Math.max(1, endPage - maxVisiblePages + 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(
+        <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
+          <button
+            className="page-link modern-page-link"
+            onClick={() => handlePageChange(i)}
+          >
+            {i}
+          </button>
+        </li>
+      );
+    }
+    return pageNumbers;
+  };
+
   if (loading) {
     return (
       <div
@@ -502,7 +528,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => handlePageChange(1)}
                 disabled={currentPage === 1}
               >
-                {language === 'fr' ? 'Page 1' : language === 'ja' ? 'ページ1' : 'Page 1'}
+                «
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
@@ -511,92 +537,82 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                {language === 'fr' ? 'Précédent' : language === 'ja' ? '前へ' : 'Previous'}
+                ‹
               </button>
             </li>
-            <li className="page-item active">
-              <span className="page-link modern-page-link current-page">
-                {language === 'fr' ? 'Page' : language === 'ja' ? 'ページ' : 'Page'} {currentPage}
-              </span>
-            </li>
-            <li className="page-item">
+            
+            {renderPageNumbers()}
+            
+            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
               <button
                 className="page-link modern-page-link"
                 onClick={() => handlePageChange(currentPage + 1)}
-                disabled={indexOfLastPokemon >= pokemonList.length}
+                disabled={currentPage === totalPages}
               >
-                {language === 'fr' ? 'Suivant' : language === 'ja' ? '次へ' : 'Next'}
+                ›
+              </button>
+            </li>
+            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+              <button
+                className="page-link modern-page-link"
+                onClick={() => handlePageChange(totalPages)}
+                disabled={currentPage === totalPages}
+              >
+                »
               </button>
             </li>
           </ul>
+
+          <div className="pagination-info">
+            Page {currentPage} sur {totalPages}
+          </div>
 
           <style jsx>{`
             .pagination-container {
               margin: 2rem 0;
               padding: 1rem;
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 1rem;
             }
 
-            .pagination {
-              gap: 0.5rem;
+            .pagination-info {
+              font-size: 0.9rem;
+              color: #666;
+              margin-top: 0.5rem;
             }
 
             .modern-page-link {
+              min-width: 40px;
+              height: 40px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
               border: none !important;
-              padding: 0.8rem 1.5rem !important;
-              border-radius: 50px !important;
-              color: #333 !important;
-              background-color: #f8f9fa !important;
-              transition: all 0.3s ease !important;
-              font-weight: 600 !important;
-              box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+              border-radius: 8px !important;
+              margin: 0 2px;
+              font-weight: 500;
+              transition: all 0.2s ease;
             }
 
-            .modern-page-link:hover:not(.current-page):not(:disabled) {
+            .page-item.active .modern-page-link {
               background-color: #ff5350 !important;
+              color: white !important;
+              transform: scale(1.1);
+            }
+
+            .modern-page-link:hover:not(:disabled) {
+              background-color: #ff7b78 !important;
               color: white !important;
               transform: translateY(-2px);
-              box-shadow: 0 4px 10px rgba(255, 83, 80, 0.3) !important;
             }
 
-            .modern-page-link:active:not(.current-page):not(:disabled) {
-              transform: translateY(0);
-            }
-
-            .current-page {
-              background-color: #ff5350 !important;
-              color: white !important;
-              box-shadow: 0 4px 10px rgba(255, 83, 80, 0.3) !important;
-            }
-
-            .page-item.disabled .modern-page-link {
-              opacity: 0.5;
-              cursor: not-allowed;
-              background-color: #e9ecef !important;
-              color: #6c757d !important;
-              box-shadow: none !important;
-            }
-
-            @media (max-width: 768px) {
+            @media (max-width: 576px) {
               .modern-page-link {
-                padding: 0.6rem 1rem !important;
+                min-width: 35px;
+                height: 35px;
                 font-size: 0.9rem;
-              }
-
-              .pagination {
-                gap: 0.3rem;
-              }
-            }
-
-            @media (max-width: 480px) {
-              .modern-page-link {
-                padding: 0.5rem 0.8rem !important;
-                font-size: 0.8rem;
-              }
-
-              .pagination {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 0.2rem;
               }
             }
           `}</style>
