@@ -502,7 +502,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => handlePageChange(1)}
                 disabled={currentPage === 1}
               >
-                {language === 'fr' ? 'Page 1' : 'Page 1'}
+                {language === 'fr' ? 'Page 1' : language === 'ja' ? 'ページ1' : 'Page 1'}
               </button>
             </li>
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
@@ -511,12 +511,12 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                {language === 'fr' ? 'Précédent' : 'Previous'}
+                {language === 'fr' ? 'Précédent' : language === 'ja' ? '前へ' : 'Previous'}
               </button>
             </li>
             <li className="page-item active">
               <span className="page-link modern-page-link current-page">
-                {language === 'fr' ? 'Page' : 'Page'} {currentPage}
+                {language === 'fr' ? 'Page' : language === 'ja' ? 'ページ' : 'Page'} {currentPage}
               </span>
             </li>
             <li className="page-item">
@@ -525,7 +525,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={indexOfLastPokemon >= pokemonList.length}
               >
-                {language === 'fr' ? 'Suivant' : 'Next'}
+                {language === 'fr' ? 'Suivant' : language === 'ja' ? '次へ' : 'Next'}
               </button>
             </li>
           </ul>
