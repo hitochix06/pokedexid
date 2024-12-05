@@ -23,7 +23,10 @@ function PokemonDetail() {
       console.log("Image URL:", imageUrl);
       return imageUrl;
     } catch (error) {
-      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
+      console.error(
+        `Erreur lors de l'importation de l'image du Pokémon ${id}`,
+        error
+      );
       return null;
     }
   };
@@ -213,7 +216,7 @@ function PokemonDetail() {
 
                   <div className="stats-section mt-5">
                     <h4 className="text-center text-white text-uppercase mb-4">
-                      Statistiques
+                      Statistics
                     </h4>
                     <div className="row">
                       <div className="col-md-6">
@@ -287,7 +290,7 @@ function PokemonDetail() {
 
                   <div className="abilities-section mt-5 px-4 pb-4">
                     <h4 className="text-center text-white text-uppercase mb-4">
-                      Capacités
+                      capacity
                     </h4>
                     <div className="row">
                       {abilities.length > 0 ? (
