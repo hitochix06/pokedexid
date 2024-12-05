@@ -10,6 +10,19 @@ function TypeFilter({ selectedType, onTypeSelect }) {
   return (
     <div className="type-filter">
       <div className="type-buttons">
+        {selectedType && (
+          <button
+            className={`type-button ${selectedType === null ? 'selected' : ''}`}
+            style={{
+              backgroundColor: '#666666',
+              borderColor: '#666666'
+            }}
+            onClick={() => onTypeSelect(null)}
+          >
+            <span>{language === 'fr' ? 'Tout' : 'All'}</span>
+          </button>
+        )}
+
         {Object.keys(pokemonTypeIcons).map((type) => (
           <button
             key={type}
@@ -95,6 +108,12 @@ function TypeFilter({ selectedType, onTypeSelect }) {
           .type-buttons {
             grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
           }
+        }
+
+        .type-button:first-child {
+          grid-column: 1 / -1;
+          max-width: 200px;
+          justify-self: center;
         }
       `}</style>
     </div>
