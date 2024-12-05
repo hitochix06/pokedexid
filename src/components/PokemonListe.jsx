@@ -390,6 +390,13 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [showScrollButton, setShowScrollButton] = useState(false);
   const { language } = useLanguage();
 
+  const handlePageChange = async (newPage) => {
+    setLoading(true);
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    onPageChange(newPage);
+    setLoading(false);
+  };
+
   useEffect(() => {
     const filterPokemonByType = async (pokemonData) => {
       if (!selectedType) return true;
@@ -492,7 +499,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
               <button
                 className="page-link"
-                onClick={() => onPageChange(currentPage - 1)}
+                onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
                 {language === 'fr' ? 'Précédent' : 'Previous'}
@@ -506,7 +513,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
             <li className="page-item">
               <button
                 className="page-link"
-                onClick={() => onPageChange(currentPage + 1)}
+                onClick={() => handlePageChange(currentPage + 1)}
                 disabled={indexOfLastPokemon >= pokemonList.length}
               >
                 {language === 'fr' ? 'Suivant' : 'Next'}
