@@ -203,7 +203,7 @@ function PokemonDetail() {
                                 alt={type}
                                 style={{ width: "30px", marginRight: "10px" }}
                               />
-                                {translateType(type, language)}
+                              {translateType(type, language)}
                             </div>
                           ))}
                         </div>
