@@ -5,6 +5,8 @@ import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import Lottie from "lottie-react";
 import fetchPokemon from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
+import { translateType } from "../utils/typeTranslations";
+import { useLanguage } from "../context/LanguageContext";
 
 function PokemonDetail() {
   const { id } = useParams();
@@ -12,6 +14,7 @@ function PokemonDetail() {
   const [error, setError] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
   const [moves, setMoves] = useState([]);
+  const { language } = useLanguage();
 
   const getPokemonImage = (id) => {
     try {
@@ -200,7 +203,7 @@ function PokemonDetail() {
                                 alt={type}
                                 style={{ width: "30px", marginRight: "10px" }}
                               />
-                              {type}
+                                {translateType(type, language)}
                             </div>
                           ))}
                         </div>
@@ -348,7 +351,7 @@ function PokemonDetail() {
                           </h5>
                           <div className="move-details">
                             <p className="mb-1">
-                              <strong>Type:</strong> {move.type}
+                              <strong>Type:</strong> {translateType(move.type)}
                             </p>
                             <p className="mb-1">
                               <strong>Puissance:</strong> {move.power}
