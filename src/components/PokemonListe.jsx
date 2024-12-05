@@ -4,8 +4,8 @@ import Lottie from "lottie-react";
 import animationPokeball from "../assets/Animationpokeball.json";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
-import TypeFilter from './TypeFilter';
-import { useLanguage } from '../context/LanguageContext';
+import TypeFilter from "./TypeFilter";
+import { useLanguage } from "../context/LanguageContext";
 import { translateType } from "../utils/typeTranslations";
 
 function Card3D({ pokemonUrl, index }) {
@@ -20,7 +20,7 @@ function Card3D({ pokemonUrl, index }) {
       try {
         const response = await fetch(pokemonUrl);
         if (!response.ok) {
-          throw new Error('Erreur lors du chargement des données');
+          throw new Error("Erreur lors du chargement des données");
         }
         const data = await response.json();
         setPokemon({
@@ -96,7 +96,9 @@ function Card3D({ pokemonUrl, index }) {
                     alt={type}
                     className="type-icon"
                   />
-                  <span className="type-name">{translateType(type, language)}</span>
+                  <span className="type-name">
+                    {translateType(type, language)}
+                  </span>
                 </div>
               ))}
             </div>
@@ -392,7 +394,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
 
   const handlePageChange = async (newPage) => {
     setLoading(true);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
     onPageChange(newPage);
     setLoading(false);
   };
@@ -400,11 +402,11 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   useEffect(() => {
     const filterPokemonByType = async (pokemonData) => {
       if (!selectedType) return true;
-      
+
       try {
         const response = await fetch(pokemonData.url);
         const data = await response.json();
-        return data.types.some(type => type.type.name === selectedType);
+        return data.types.some((type) => type.type.name === selectedType);
       } catch (error) {
         console.error("Erreur lors du filtrage:", error);
         return false;
@@ -422,7 +424,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
             return shouldInclude ? pokemon : null;
           })
         );
-        setFilteredPokemon(filtered.filter(pokemon => pokemon !== null));
+        setFilteredPokemon(filtered.filter((pokemon) => pokemon !== null));
       }
       setLoading(false);
     };
@@ -435,14 +437,14 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
       setShowScrollButton(window.scrollY > 300);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   };
 
@@ -459,14 +461,16 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
     let startPage = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2));
     let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
 
-    // Ajuster startPage si on est proche de la fin
     if (endPage - startPage + 1 < maxVisiblePages) {
       startPage = Math.max(1, endPage - maxVisiblePages + 1);
     }
 
     for (let i = startPage; i <= endPage; i++) {
       pageNumbers.push(
-        <li key={i} className={`page-item ${currentPage === i ? "active" : ""}`}>
+        <li
+          key={i}
+          className={`page-item ${currentPage === i ? "active" : ""}`}
+        >
           <button
             className="page-link modern-page-link"
             onClick={() => handlePageChange(i)}
@@ -503,7 +507,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
           onPageChange(1);
         }}
       />
-      
+
       <div className="row row-cols-1 row-cols-sm-2 row-cols-md-2 row-cols-lg-3 g-3 mb-4">
         {currentPokemon.map((pokemon, index) => (
           <div className="col" key={pokemon.name}>
@@ -520,7 +524,10 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
         )}
       </div>
       {!selectedType && pokemonList.length > pokemonPerPage && (
-        <nav aria-label="Navigation des pages de Pokémon" className="pagination-container">
+        <nav
+          aria-label="Navigation des pages de Pokémon"
+          className="pagination-container"
+        >
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
               <button
@@ -540,10 +547,14 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 ‹
               </button>
             </li>
-            
+
             {renderPageNumbers()}
-            
-            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
               <button
                 className="page-link modern-page-link"
                 onClick={() => handlePageChange(currentPage + 1)}
@@ -552,7 +563,11 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 ›
               </button>
             </li>
-            <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
+            <li
+              className={`page-item ${
+                currentPage === totalPages ? "disabled" : ""
+              }`}
+            >
               <button
                 className="page-link modern-page-link"
                 onClick={() => handlePageChange(totalPages)}
@@ -590,22 +605,27 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
               align-items: center;
               justify-content: center;
               border: none !important;
-              border-radius: 8px !important;
-              margin: 0 2px;
+              border-radius: 50% !important;
+              margin: 0 5px;
               font-weight: 500;
-              transition: all 0.2s ease;
+              transition: all 0.3s ease;
+              background-color: #f0f0f0;
+              color: #333;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
             }
 
             .page-item.active .modern-page-link {
               background-color: #ff5350 !important;
               color: white !important;
-              transform: scale(1.1);
+              transform: scale(1.2);
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }
 
             .modern-page-link:hover:not(:disabled) {
               background-color: #ff7b78 !important;
               color: white !important;
-              transform: translateY(-2px);
+              transform: translateY(-3px);
+              box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
             }
 
             @media (max-width: 576px) {
@@ -620,7 +640,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
       )}
 
       {showScrollButton && (
-        <button 
+        <button
           className="scroll-to-top-button"
           onClick={scrollToTop}
           aria-label="Retour en haut"
@@ -670,7 +690,8 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
         }
 
         @keyframes bounce {
-          0%, 100% {
+          0%,
+          100% {
             transform: translateY(0);
           }
           50% {
