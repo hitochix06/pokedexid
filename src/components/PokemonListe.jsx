@@ -494,11 +494,20 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
         )}
       </div>
       {!selectedType && pokemonList.length > pokemonPerPage && (
-        <nav aria-label="Navigation des pages de Pokémon">
+        <nav aria-label="Navigation des pages de Pokémon" className="pagination-container">
           <ul className="pagination justify-content-center">
             <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
               <button
-                className="page-link"
+                className="page-link modern-page-link"
+                onClick={() => handlePageChange(1)}
+                disabled={currentPage === 1}
+              >
+                {language === 'fr' ? 'Page 1' : 'Page 1'}
+              </button>
+            </li>
+            <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+              <button
+                className="page-link modern-page-link"
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
@@ -506,13 +515,13 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
               </button>
             </li>
             <li className="page-item active">
-              <span className="page-link">
+              <span className="page-link modern-page-link current-page">
                 {language === 'fr' ? 'Page' : 'Page'} {currentPage}
               </span>
             </li>
             <li className="page-item">
               <button
-                className="page-link"
+                className="page-link modern-page-link"
                 onClick={() => handlePageChange(currentPage + 1)}
                 disabled={indexOfLastPokemon >= pokemonList.length}
               >
@@ -520,6 +529,77 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
               </button>
             </li>
           </ul>
+
+          <style jsx>{`
+            .pagination-container {
+              margin: 2rem 0;
+              padding: 1rem;
+            }
+
+            .pagination {
+              gap: 0.5rem;
+            }
+
+            .modern-page-link {
+              border: none !important;
+              padding: 0.8rem 1.5rem !important;
+              border-radius: 50px !important;
+              color: #333 !important;
+              background-color: #f8f9fa !important;
+              transition: all 0.3s ease !important;
+              font-weight: 600 !important;
+              box-shadow: 0 2px 5px rgba(0,0,0,0.1) !important;
+            }
+
+            .modern-page-link:hover:not(.current-page):not(:disabled) {
+              background-color: #ff5350 !important;
+              color: white !important;
+              transform: translateY(-2px);
+              box-shadow: 0 4px 10px rgba(255, 83, 80, 0.3) !important;
+            }
+
+            .modern-page-link:active:not(.current-page):not(:disabled) {
+              transform: translateY(0);
+            }
+
+            .current-page {
+              background-color: #ff5350 !important;
+              color: white !important;
+              box-shadow: 0 4px 10px rgba(255, 83, 80, 0.3) !important;
+            }
+
+            .page-item.disabled .modern-page-link {
+              opacity: 0.5;
+              cursor: not-allowed;
+              background-color: #e9ecef !important;
+              color: #6c757d !important;
+              box-shadow: none !important;
+            }
+
+            @media (max-width: 768px) {
+              .modern-page-link {
+                padding: 0.6rem 1rem !important;
+                font-size: 0.9rem;
+              }
+
+              .pagination {
+                gap: 0.3rem;
+              }
+            }
+
+            @media (max-width: 480px) {
+              .modern-page-link {
+                padding: 0.5rem 0.8rem !important;
+                font-size: 0.8rem;
+              }
+
+              .pagination {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 0.2rem;
+              }
+            }
+          `}</style>
         </nav>
       )}
 
