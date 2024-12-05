@@ -2,7 +2,7 @@ import React from "react";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import { translateType } from "../utils/typeTranslations";
-import { useLanguage } from '../context/LanguageContext';
+import { useLanguage } from "../context/LanguageContext";
 
 function TypeFilter({ selectedType, onTypeSelect }) {
   const { language } = useLanguage();
@@ -12,30 +12,36 @@ function TypeFilter({ selectedType, onTypeSelect }) {
       <div className="type-buttons">
         {selectedType && (
           <button
-            className={`type-button ${selectedType === null ? 'selected' : ''}`}
+            className={`type-button ${selectedType === null ? "selected" : ""}`}
             style={{
-              backgroundColor: '#666666',
-              borderColor: '#666666'
+              backgroundColor: "#666666",
+              borderColor: "#666666",
             }}
             onClick={() => onTypeSelect(null)}
           >
-            <span>{language === 'fr' ? 'Tout' : 'All'}</span>
+            <span>
+              {language === "fr"
+                ? "Tout"
+                : language === "ja"
+                ? "すべて"
+                : "All"}
+            </span>
           </button>
         )}
 
         {Object.keys(pokemonTypeIcons).map((type) => (
           <button
             key={type}
-            className={`type-button ${selectedType === type ? 'selected' : ''}`}
+            className={`type-button ${selectedType === type ? "selected" : ""}`}
             style={{
               backgroundColor: pokemonColors[type],
-              borderColor: pokemonColors[type]
+              borderColor: pokemonColors[type],
             }}
             onClick={() => onTypeSelect(type)}
           >
-            <img 
-              src={pokemonTypeIcons[type]} 
-              alt={type} 
+            <img
+              src={pokemonTypeIcons[type]}
+              alt={type}
               className="type-icon"
             />
             <span>{translateType(type, language)}</span>
@@ -68,18 +74,18 @@ function TypeFilter({ selectedType, onTypeSelect }) {
           cursor: pointer;
           transition: all 0.3s ease;
           color: white;
-          text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+          text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
           font-weight: bold;
         }
 
         .type-button:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .type-button.selected {
           transform: scale(0.95);
-          box-shadow: inset 0 2px 4px rgba(0,0,0,0.2);
+          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .type-icon {
@@ -120,4 +126,4 @@ function TypeFilter({ selectedType, onTypeSelect }) {
   );
 }
 
-export default TypeFilter; 
+export default TypeFilter;

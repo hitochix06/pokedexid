@@ -6,11 +6,30 @@ export function LanguageProvider({ children }) {
   const [language, setLanguage] = useState('en');
 
   const toggleLanguage = () => {
-    setLanguage(prev => prev === 'en' ? 'fr' : 'en');
+    setLanguage(prev => {
+      switch (prev) {
+        case 'en':
+          return 'fr';
+        case 'fr':
+          return 'ja';
+        default:
+          return 'en';
+      }
+    });
+  };
+
+  const setSpecificLanguage = (lang) => {
+    if (['en', 'fr', 'ja'].includes(lang)) {
+      setLanguage(lang);
+    }
   };
 
   return (
-    <LanguageContext.Provider value={{ language, toggleLanguage }}>
+    <LanguageContext.Provider value={{ 
+      language, 
+      toggleLanguage,
+      setSpecificLanguage 
+    }}>
       {children}
     </LanguageContext.Provider>
   );

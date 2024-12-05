@@ -3,13 +3,16 @@ import { useLanguage } from "../context/LanguageContext";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import logo from "../logo.svg";
+import Dropdown from "react-bootstrap/Dropdown";
 
 function Navigation() {
-  const { toggleLanguage, language } = useLanguage();
+  const { setSpecificLanguage, language } = useLanguage();
 
+  // Définition des noms de langues avec leurs drapeaux
   const languageNames = {
-    fr: "Français",
-    en: "English",
+    fr: { name: "Français", flag: "🇫🇷" },
+    en: { name: "English", flag: "🇬🇧" },
+    ja: { name: "日本語", flag: "🇯🇵" },
   };
 
   return (
@@ -19,35 +22,24 @@ function Navigation() {
           <img src={logo} alt="icon" style={{ width: "200px" }} />
         </Navbar.Brand>
 
-        <button className="language-toggle" onClick={toggleLanguage}>
-          {languageNames[language]}
-        </button>
+        <Dropdown>
+          <Dropdown.Toggle variant="outline-light" id="language-dropdown">
+            {languageNames[language].flag} {languageNames[language].name}
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu>
+            {Object.entries(languageNames).map(([code, { name, flag }]) => (
+              <Dropdown.Item
+                key={code}
+                onClick={() => setSpecificLanguage(code)}
+                active={language === code}
+              >
+                {flag} {name}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
       </Container>
-
-      <style jsx>{`
-        .language-toggle {
-          padding: 8px 16px;
-          background-color: transparent;
-          border: 2px solid #ffffff;
-          border-radius: 4px;
-          color: white;
-          cursor: pointer;
-          font-weight: bold;
-          transition: all 0.3s ease;
-        }
-
-        .language-toggle:hover {
-          background-color: rgba(255, 255, 255, 0.1);
-          transform: scale(1.05);
-        }
-
-        @media (max-width: 480px) {
-          .language-toggle {
-            padding: 6px 12px;
-            font-size: 0.9em;
-          }
-        }
-      `}</style>
     </Navbar>
   );
 }
