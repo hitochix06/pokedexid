@@ -18,12 +18,12 @@ function PokemonDetail() {
 
   const getPokemonImage = (id) => {
     try {
-      return require(`../assets/pokemon/${id}.png`);
+      console.log("Pokemon data:", pokemon);
+      const imageUrl = pokemon?.image;
+      console.log("Image URL:", imageUrl);
+      return imageUrl;
     } catch (error) {
-      console.error(
-        `Erreur lors de l'importation de l'image du Pokémon ${id}`,
-        error
-      );
+      console.error(`Erreur lors de l'importation de l'image du Pokémon ${id}`, error);
       return null;
     }
   };
