@@ -6,6 +6,7 @@ import Lottie from "lottie-react";
 import fetchPokemon from "../api/Api";
 import animationPokeball from "../assets/Animationpokeball.json";
 import { translateType } from "../utils/typeTranslations";
+import { translatePokemonName } from "../utils/pokemonTranslations";
 import { useLanguage } from "../context/LanguageContext";
 
 function PokemonDetail() {
@@ -156,7 +157,9 @@ function PokemonDetail() {
                 }}
               >
                 <div className="card-header text-center text-white py-4">
-                  <h1 className="display-5 text-uppercase">{pokemon.name}</h1>
+                  <h1 className="display-5 text-uppercase">
+                    {translatePokemonName(pokemon.name, language)}
+                  </h1>
                   <div className="pokemon-number text-white-50">
                     #{pokemon.id.toString().padStart(3, "0")}
                   </div>

@@ -2003,7 +2003,7 @@ export const pokemonTranslations = {
     "gimmighoul": "Gimmighoul",
     "gholdengo": "Gholdengo"
   },
-  "jp": {
+  "ja": {
     "bulbasaur": "フシギダネ",
     "ivysaur": "フシギソウ",
     "venusaur": "フシギバナ",
@@ -3007,7 +3007,7 @@ export const pokemonTranslations = {
   }
 };
 
-
-export const translatePokemon = (pokemon, language = 'en') => {
-  return pokemonTranslations[language][pokemon.toLowerCase()] || pokemon;
+export const translatePokemonName = (name, language) => {
+  if (!name) return "";
+  return pokemonTranslations[language]?.[name.toLowerCase()] || name;
 };
