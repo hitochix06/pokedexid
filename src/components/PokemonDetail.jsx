@@ -134,7 +134,7 @@ function PokemonDetail() {
               e.currentTarget.style.borderColor = primaryColor;
             }}
           >
-            ← Retour
+            ← Return
           </Link>
         </div>
       </div>
@@ -177,11 +177,11 @@ function PokemonDetail() {
                     <div className="col-md-6">
                       <div className="row text-white">
                         <div className="col-6 mb-3">
-                          <h5>Taille</h5>
+                          <h5>Size</h5>
                           <p className="lead">{pokemon.height} m</p>
                         </div>
                         <div className="col-6 mb-3">
-                          <h5>Poids</h5>
+                          <h5>Weight</h5>
                           <p className="lead">{pokemon.weight} kg</p>
                         </div>
                       </div>
@@ -333,7 +333,7 @@ function PokemonDetail() {
                 }}
               >
                 <div className="card-header text-center text-white py-4">
-                  <h4 className="text-uppercase">Mouvements</h4>
+                  <h4 className="text-uppercase">Movements</h4>
                 </div>
                 <div className="card-body">
                   <div className="row">
@@ -354,10 +354,10 @@ function PokemonDetail() {
                               <strong>Type:</strong> {translateType(move.type)}
                             </p>
                             <p className="mb-1">
-                              <strong>Puissance:</strong> {move.power}
+                              <strong>Power:</strong> {move.power}
                             </p>
                             <p className="mb-1">
-                              <strong>Précision:</strong> {move.accuracy}
+                              <strong>Precision:</strong> {move.accuracy}
                             </p>
                           </div>
                         </div>
