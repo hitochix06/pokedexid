@@ -5,12 +5,15 @@ import animationPokeball from "../assets/Animationpokeball.json";
 import pokemonColors from "../data/pokemonColors.json";
 import pokemonTypeIcons from "../assets/pokemonTypelcons";
 import TypeFilter from './TypeFilter';
+import { useLanguage } from '../context/LanguageContext';
+import { translateType } from "../utils/typeTranslations";
 
 function Card3D({ pokemonUrl, index }) {
   const [pokemon, setPokemon] = useState(null);
   const [error, setError] = useState(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +96,7 @@ function Card3D({ pokemonUrl, index }) {
                     alt={type}
                     className="type-icon"
                   />
-                  <span className="type-name">{type}</span>
+                  <span className="type-name">{translateType(type, language)}</span>
                 </div>
               ))}
             </div>
@@ -385,6 +388,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
   const [filteredPokemon, setFilteredPokemon] = useState([]);
   const pokemonPerPage = 20;
   const [showScrollButton, setShowScrollButton] = useState(false);
+  const { language } = useLanguage();
 
   useEffect(() => {
     const filterPokemonByType = async (pokemonData) => {
@@ -491,11 +495,13 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => onPageChange(currentPage - 1)}
                 disabled={currentPage === 1}
               >
-                Précédent
+                {language === 'fr' ? 'Précédent' : 'Previous'}
               </button>
             </li>
             <li className="page-item active">
-              <span className="page-link">Page {currentPage}</span>
+              <span className="page-link">
+                {language === 'fr' ? 'Page' : 'Page'} {currentPage}
+              </span>
             </li>
             <li className="page-item">
               <button
@@ -503,7 +509,7 @@ function PokemonList({ pokemonList, currentPage, onPageChange }) {
                 onClick={() => onPageChange(currentPage + 1)}
                 disabled={indexOfLastPokemon >= pokemonList.length}
               >
-                Suivant
+                {language === 'fr' ? 'Suivant' : 'Next'}
               </button>
             </li>
           </ul>
